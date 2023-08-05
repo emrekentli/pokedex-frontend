@@ -18,7 +18,7 @@ const Stats = () => {
 
     const [stats, setStats] = useState(null);
     const [statDialog, setStatDialog] = useState(false);
-    const [deleteProductDialog, setDeleteProductDialog] = useState(false);
+    const [deleteStatDialog, setDeleteStatDialog] = useState(false);
     const [deleteStatsDialog, setDeleteStatsDialog] = useState(false);
     const [stat, setStat] = useState(emptyStat);
     const [selectedStats, setSelectedStats] = useState(null);
@@ -55,15 +55,15 @@ const Stats = () => {
         setStatDialog(false);
     };
 
-    const hideDeleteProductDialog = () => {
-        setDeleteProductDialog(false);
+    const hideDeleteStatDialog = () => {
+        setDeleteStatDialog(false);
     };
 
     const hideDeleteStatsDialog = () => {
         setDeleteStatsDialog(false);
     };
 
-    const saveProduct = () => {
+    const saveStat = () => {
         setSubmitted(true);
       
         if (stat.name.trim()) {
@@ -72,21 +72,21 @@ const Stats = () => {
           if (stat.id) {
             statService.updateStat(_stat).then(data => {
               const index = findIndexById(stat.id);
-              _stats[index] = _stat;
+              _stats[index] = data;
               setStats(_stats);
               setStatDialog(false);
               setStat(emptyStat);
-              toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+              toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Stat Updated', life: 3000 });
             }).catch(error => {
                 toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
                         });
           } else {
             statService.createStat(_stat).then(data => {
-              _stats.push(_stat);
+              _stats.push(data);
               setStats(_stats);
               setStatDialog(false);
               setStat(emptyStat);
-              toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+              toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Stat Created', life: 3000 });
             }).catch(error => {
                 toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
             });
@@ -95,24 +95,24 @@ const Stats = () => {
       };
       
 
-    const editProduct = (stat) => {
+    const editStat = (stat) => {
         setStat({ ...stat });
         setStatDialog(true);
     };
 
-    const confirmDeleteProduct = (stat) => {
+    const confirmDeleteStat = (stat) => {
         setStat(stat);
-        setDeleteProductDialog(true);
+        setDeleteStatDialog(true);
     };
 
-    const deleteProduct = () => {
+    const deleteStat = () => {
         statService.deleteStat(stat).then(data => {
         
             let _stats = stats.filter((val) => val.id !== stat.id);
             setStats(_stats);
-            setDeleteProductDialog(false);
+            setDeleteStatDialog(false);
             setStat(emptyStat);
-            toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+            toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Stat Deleted', life: 3000 });
         }).catch(error => {
             toast.current.show({ severity: 'danger', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
         }
@@ -193,8 +193,8 @@ const Stats = () => {
     const actionBodyTemplate = (rowData) => {
         return (
             <div className="actions">
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editProduct(rowData)} />
-                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteProduct(rowData)} />
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editStat(rowData)} />
+                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteStat(rowData)} />
             </div>
         );
     };
@@ -212,13 +212,13 @@ const Stats = () => {
     const statDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveProduct} />
+            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveStat} />
         </>
     );
-    const deleteProductDialogFooter = (
+    const deleteStatDialogFooter = (
         <>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteProductDialog} />
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteProduct} />
+            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteStatDialog} />
+            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteStat} />
         </>
     );
     const deleteStatsDialogFooter = (
@@ -276,7 +276,7 @@ const Stats = () => {
                         </div>
                     </Dialog>
 
-                    <Dialog visible={deleteProductDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
+                    <Dialog visible={deleteStatDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteStatDialogFooter} onHide={hideDeleteStatDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {stat && (

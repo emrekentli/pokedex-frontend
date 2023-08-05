@@ -37,7 +37,7 @@ import InvalidStateDemo from './components/InvalidStateDemo';
 import TimelineDemo from './pages/TimelineDemo';
 import Types from './pages/Types';
 import Stats from './pages/Stats';
-
+import Abilities from './pages/Abilities';
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
 
@@ -87,6 +87,7 @@ const App = () => {
         { path: '/panel', parent: 'UI Kit', label: 'Panel' },
         { path: '/overlay', parent: 'UI Kit', label: 'Overlay' },
         { path: '/media', parent: 'UI Kit', label: 'Media' },
+        {path:'/abilities', parent: 'Settings', label: 'Abilities'},
         { path: '/menu', parent: 'UI Kit', label: 'Menu' },
         { path: '/menu/seat', parent: 'UI Kit', label: 'Menu' },
         { path: '/menu/payment', parent: 'UI Kit', label: 'Menu' },
@@ -98,8 +99,8 @@ const App = () => {
         { path: '/icons', parent: 'Utilities', label: 'Icons' },
         { path: '/blocks', parent: 'PrimeBlocks', label: 'Blocks' },
         { path: '/crud', parent: 'Utilities', label: 'Crud' },
-        { path: '/types', parent: 'Settings', label: 'Type' },
-        { path: '/stats', parent: 'Settings', label: 'Stat' },
+        { path: '/types', parent: 'Settings', label: 'Types' },
+        { path: '/stats', parent: 'Settings', label: 'Stats' },
         { path: '/calendar', parent: 'PrimeBlocks', label: 'Calendar' },
         { path: '/timeline', parent: 'Pages', label: 'Timeline' },
         { path: '/invoice', parent: 'Pages', label: 'Invoice' },
@@ -116,6 +117,7 @@ const App = () => {
             { label: 'Settings', icon: 'pi pi-fw pi-home', items: [
                 { label: 'Types', icon: 'pi pi-fw pi-home', to: '/types' }
                 ,  { label: 'Stats', icon: 'pi pi-fw pi-home', to: '/stats' }
+                ,  { label: 'Abilities', icon: 'pi pi-fw pi-home', to: '/abilities' }
             ] }],
         },
       
@@ -551,6 +553,7 @@ const App = () => {
                         <Route path="/media" element={<MediaDemo />} />
                         <Route path="/menu/*" element={<MenuDemo />} />
                         <Route path="/messages" element={<MessagesDemo />} />
+                        <Route path="/abilities" element={<Abilities />} />
                         <Route path="/file" element={<FileDemo />} />
                         <Route path="/chart" element={<ChartDemo colorMode={colorScheme} location={location} />} />
                         <Route path="/misc" element={<MiscDemo />} />

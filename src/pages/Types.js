@@ -18,7 +18,7 @@ const Types = () => {
 
     const [types, setTypes] = useState(null);
     const [typeDialog, setTypeDialog] = useState(false);
-    const [deleteProductDialog, setDeleteProductDialog] = useState(false);
+    const [deleteTypeDialog, setDeleteTypeDialog] = useState(false);
     const [deleteTypesDialog, setDeleteTypesDialog] = useState(false);
     const [type, setType] = useState(emptyType);
     const [selectedTypes, setSelectedTypes] = useState(null);
@@ -55,15 +55,15 @@ const Types = () => {
         setTypeDialog(false);
     };
 
-    const hideDeleteProductDialog = () => {
-        setDeleteProductDialog(false);
+    const hideDeleteTypeDialog = () => {
+        setDeleteTypeDialog(false);
     };
 
     const hideDeleteTypesDialog = () => {
         setDeleteTypesDialog(false);
     };
 
-    const saveProduct = () => {
+    const saveType = () => {
         setSubmitted(true);
       
         if (type.name.trim()) {
@@ -72,21 +72,21 @@ const Types = () => {
           if (type.id) {
             typeService.updateType(_type).then(data => {
               const index = findIndexById(type.id);
-              _types[index] = _type;
+              _types[index] = data;
               setTypes(_types);
               setTypeDialog(false);
               setType(emptyType);
-              toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+              toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Type Updated', life: 3000 });
             }).catch(error => {
                 toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
                         });
           } else {
             typeService.createType(_type).then(data => {
-              _types.push(_type);
+              _types.push(data);
               setTypes(_types);
               setTypeDialog(false);
               setType(emptyType);
-              toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+              toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Type Created', life: 3000 });
             }).catch(error => {
                 toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
             });
@@ -95,24 +95,24 @@ const Types = () => {
       };
       
 
-    const editProduct = (type) => {
+    const editType = (type) => {
         setType({ ...type });
         setTypeDialog(true);
     };
 
-    const confirmDeleteProduct = (type) => {
+    const confirmDeleteType = (type) => {
         setType(type);
-        setDeleteProductDialog(true);
+        setDeleteTypeDialog(true);
     };
 
-    const deleteProduct = () => {
+    const deleteType = () => {
         typeService.deleteType(type).then(data => {
         
             let _types = types.filter((val) => val.id !== type.id);
             setTypes(_types);
-            setDeleteProductDialog(false);
+            setDeleteTypeDialog(false);
             setType(emptyType);
-            toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+            toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Type Deleted', life: 3000 });
         }).catch(error => {
             toast.current.show({ severity: 'danger', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
         }
@@ -193,8 +193,8 @@ const Types = () => {
     const actionBodyTemplate = (rowData) => {
         return (
             <div className="actions">
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editProduct(rowData)} />
-                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteProduct(rowData)} />
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editType(rowData)} />
+                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteType(rowData)} />
             </div>
         );
     };
@@ -212,13 +212,13 @@ const Types = () => {
     const typeDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveProduct} />
+            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveType} />
         </>
     );
-    const deleteProductDialogFooter = (
+    const deleteTypeDialogFooter = (
         <>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteProductDialog} />
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteProduct} />
+            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteTypeDialog} />
+            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteType} />
         </>
     );
     const deleteTypesDialogFooter = (
@@ -276,7 +276,7 @@ const Types = () => {
                         </div>
                     </Dialog>
 
-                    <Dialog visible={deleteProductDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
+                    <Dialog visible={deleteTypeDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteTypeDialogFooter} onHide={hideDeleteTypeDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {type && (
