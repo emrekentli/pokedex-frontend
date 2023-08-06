@@ -65,7 +65,7 @@ const Types = () => {
 
     const saveType = () => {
         setSubmitted(true);
-      
+
         if (type.name.trim()) {
           let _types = [...types];
           let _type = { ...type };
@@ -93,7 +93,7 @@ const Types = () => {
           }
         }
       };
-      
+
 
     const editType = (type) => {
         setType({ ...type });
@@ -107,7 +107,7 @@ const Types = () => {
 
     const deleteType = () => {
         typeService.deleteType(type).then(data => {
-        
+
             let _types = types.filter((val) => val.id !== type.id);
             setTypes(_types);
             setDeleteTypeDialog(false);
@@ -135,7 +135,7 @@ const Types = () => {
         return index;
     };
 
-   
+
     const confirmDeleteSelected = () => {
         setDeleteTypesDialog(true);
     };
@@ -145,12 +145,12 @@ const Types = () => {
           for (let i = 0; i < selectedTypes.length; i++) {
             await typeService.deleteType(selectedTypes[i]);
           }
-      
+
           let _types = types.filter((val) => !selectedTypes.includes(val));
           setTypes(_types);
           setDeleteTypesDialog(false);
           setSelectedTypes(null);
-      
+
           toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Types Deleted', life: 3000 });
         } catch (error) {
           console.error('Delete error:', error);
@@ -262,7 +262,7 @@ const Types = () => {
                     >
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
                         <Column field="name" header="Name" sortable body={nameBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
-                     
+
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
                     <div className="card">

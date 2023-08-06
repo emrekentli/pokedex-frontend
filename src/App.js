@@ -28,13 +28,8 @@ import MiscDemo from './components/MiscDemo';
 import Documentation from './components/Documentation';
 import BlocksDemo from './components/BlocksDemo';
 import IconsDemo from './utilities/IconsDemo';
-import CrudDemo from './pages/CrudDemo';
-import CalendarDemo from './pages/CalendarDemo';
-import Invoice from './pages/Invoice';
-import Help from './pages/Help';
 import EmptyPage from './pages/EmptyPage';
 import InvalidStateDemo from './components/InvalidStateDemo';
-import TimelineDemo from './pages/TimelineDemo';
 import Types from './pages/Types';
 import Stats from './pages/Stats';
 import Abilities from './pages/Abilities';
@@ -45,6 +40,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import './App.scss';
+import Pokemons from "./pages/Pokemons";
 
 const App = () => {
     const [menuActive, setMenuActive] = useState(false);
@@ -63,7 +59,7 @@ const App = () => {
     const [ripple, setRipple] = useState(false);
     const [logoColor, setLogoColor] = useState('white');
     const [componentTheme, setComponentTheme] = useState('blue');
-    const [logoUrl, setLogoUrl] = useState('assets/layout/images/logo-dark.svg');
+    const [logoUrl, setLogoUrl] = useState('assets/layout/images/logo.png');
     const copyTooltipRef = useRef();
     const location = useLocation();
 
@@ -100,6 +96,7 @@ const App = () => {
         { path: '/blocks', parent: 'PrimeBlocks', label: 'Blocks' },
         { path: '/crud', parent: 'Utilities', label: 'Crud' },
         { path: '/types', parent: 'Settings', label: 'Types' },
+        {path:'/pokemons', parent: 'Pokemons', label: 'Pokemons'},
         { path: '/stats', parent: 'Settings', label: 'Stats' },
         { path: '/calendar', parent: 'PrimeBlocks', label: 'Calendar' },
         { path: '/timeline', parent: 'Pages', label: 'Timeline' },
@@ -114,13 +111,14 @@ const App = () => {
             label: 'Favorites',
             icon: 'pi pi-fw pi-home',
             items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
+                { label: 'Pokemons', icon: 'pi pi-fw pi-home', to: '/pokemons' },
             { label: 'Settings', icon: 'pi pi-fw pi-home', items: [
                 { label: 'Types', icon: 'pi pi-fw pi-home', to: '/types' }
                 ,  { label: 'Stats', icon: 'pi pi-fw pi-home', to: '/stats' }
                 ,  { label: 'Abilities', icon: 'pi pi-fw pi-home', to: '/abilities' }
             ] }],
         },
-      
+
         {
             label: 'Components',
             icon: 'pi pi-fw pi-align-left',
@@ -558,15 +556,11 @@ const App = () => {
                         <Route path="/chart" element={<ChartDemo colorMode={colorScheme} location={location} />} />
                         <Route path="/misc" element={<MiscDemo />} />
                         <Route path="/icons" element={<IconsDemo />} />
-                        <Route path="/crud" element={<CrudDemo />} />
                         <Route path="/types" element={<Types />} />
                         <Route path="/stats" element={<Stats />} />
                         <Route path="/blocks" element={<BlocksDemo />} />
-                        <Route path="/calendar" element={<CalendarDemo />} />
-                        <Route path="/timeline" element={<TimelineDemo />} />
-                        <Route path="/invoice" element={<Invoice logoUrl={logoUrl} location={location} />} />
-                        <Route path="/help" element={<Help />} />
                         <Route path="/empty" element={<EmptyPage />} />
+                        <Route path="/pokemons" element={<Pokemons />} />
                         <Route path="/documentation" element={<Documentation />} />
                     </Routes>
                 </div>

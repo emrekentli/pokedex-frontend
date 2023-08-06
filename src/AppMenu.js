@@ -6,8 +6,7 @@ const AppMenu = (props) => {
     return (
         <div className="layout-sidebar" onClick={props.onMenuClick}>
             <Link to="/" className="logo">
-                <img id="app-logo" className="logo-image" src="assets/layout/images/logo-white.svg" alt="diamond layout" />
-                <span className="app-name">DIAMOND</span>
+                <img id="app-logo" className="w-full" src="assets/layout/images/logo.png" alt="pokedex" />
             </Link>
 
             <div className="layout-menu-container">

@@ -15,7 +15,7 @@ const AppTopbar = (props) => {
                 </button>
 
                 <Link to="/">
-                    <img id="logo-horizontal" className="horizontal-logo" src="assets/layout/images/logo-white.svg" alt="diamond-layout" />
+                    <img id="logo-horizontal" className="horizontal-logo" src="assets/layout/images/logo.png" alt="diamond-layout" />
                 </Link>
 
                 <span className="topbar-separator"></span>
@@ -24,7 +24,7 @@ const AppTopbar = (props) => {
                     <AppBreadcrumb meta={props.meta} />
                 </div>
 
-                <img id="logo-mobile" className="mobile-logo" src="assets/layout/images/logo-dark.svg" alt="diamond-layout" />
+                <img id="logo-mobile" className="mobile-logo" src="assets/layout/images/logo.png" alt="diamond-layout" />
             </div>
 
             <AppMenu
@@ -41,10 +41,10 @@ const AppTopbar = (props) => {
 
             <div className="topbar-right">
                 <ul className="topbar-menu">
-                
+
 
                     <li className={profileItemClassName}>
-                        <button type="button" className="p-link" onClick={props.onTopbarUserMenu}>
+                        <button type="button" className="p-link p-0" onClick={props.onTopbarUserMenu}>
                             <span className="profile-name">Amelia Stone</span>
                         </button>
                         <ul className="profile-menu fade-in-up">

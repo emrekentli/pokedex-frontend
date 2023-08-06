@@ -8,7 +8,7 @@ export const Login = () => {
         <div className="login-body">
             <div className="login-wrapper">
                 <div className="login-panel">
-                    <img src="assets/layout/images/logo-dark.svg" className="logo" alt="diamond-layout" />
+                    <img src="assets/layout/images/logo.png" className="logo" alt="diamond-layout" />
 
                     <div className="login-form">
                         <h2>Login</h2>

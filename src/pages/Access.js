@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const Access = () => {
     return (
         <div className="exception-body access">
-            <img src="assets/layout/images/logo-white.svg" alt="diamond-layout" className="logo" />
+            <img src="assets/layout/images/logo.png" alt="diamond-layout" className="logo" />
 
             <div className="exception-content">
                 <div className="exception-title">ACCESS DENIED</div>
