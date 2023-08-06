@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {classNames} from 'primereact/utils';
 import {Toast} from 'primereact/toast';
 import {Button} from 'primereact/button';
@@ -8,6 +8,10 @@ import {InputText} from 'primereact/inputtext';
 import PokemonService from '../service/PokemonService';
 import {Paginator} from 'primereact/paginator';
 import {DataView, DataViewLayoutOptions} from 'primereact/dataview';
+import {Accordion, AccordionTab} from 'primereact/accordion';
+import {Dropdown} from 'primereact/dropdown';
+import TypeService from '../service/TypeService';
+import {InputNumber} from "primereact/inputnumber";
 
 const Pokemons = () => {
     let emptyPokemon = {
@@ -26,25 +30,59 @@ const Pokemons = () => {
     const [pokemons, setPokemons] = useState(null);
     const [pokemonDialog, setPokemonDialog] = useState(false);
     const [deletePokemonDialog, setDeletePokemonDialog] = useState(false);
-    const [deletePokemonsDialog, setDeletePokemonsDialog] = useState(false);
     const [pokemon, setPokemon] = useState(emptyPokemon);
-    const [selectedPokemons, setSelectedPokemons] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const toast = useRef(null);
     const [totalElements, setTotalElements] = useState(0);
-    const filter = {
+
+
+    const [filter, setFilter] = useState({
         page: 0,
         size: 12,
-        sort: 'imageUrl,asc',
-        name: null
+        sort: 'created,asc',
+        name: "",
+        baseExperience: "",
+        height: "",
+        weight: "",
+        imageUrl: '',
+        type: null,
+        ability: ""
+    });
+    const clearFilters = () => {
+        setFilter({
+            page: 0,
+            size: 12,
+            sort: 'created,asc',
+            name: "",
+            baseExperience: "",
+            height: "",
+            weight: "",
+            imageUrl: '',
+            type: null,
+            ability: ""
+        });
+        setSelectedType(null);
     };
+    const [selectedType, setSelectedType] = useState(null);
     const pokemonService = new PokemonService();
+    const typeService = new TypeService();
+    const [types, setTypes] = useState([]);
     useEffect(() => {
-        getPokemons(filter);
+        typeService.getTypes()
+            .then((typesData) => {
+                setTypes(typesData.items.content);
+            })
+            .catch((error) => {
+                console.error('Error fetching types:', error);
+            });
+        getPokemons();
         // eslint-disable-next-line
     }, []);
 
-    const getPokemons = (filter) => {
+    const setSelectedTypeFilter = (e) => {
+        setFilter({...filter, type: e ? e.name : null});
+    }
+    const getPokemons = () => {
         pokemonService.getPokemons(filter).then((data) => {
             setTotalElements(data.items.totalElements);
             setPokemons(data.items.content);
@@ -65,9 +103,7 @@ const Pokemons = () => {
         setDeletePokemonDialog(false);
     };
 
-    const hideDeletePokemonsDialog = () => {
-        setDeletePokemonsDialog(false);
-    };
+
 
     const savePokemon = () => {
         setSubmitted(true);
@@ -99,8 +135,6 @@ const Pokemons = () => {
             }
         }
     };
-
-
     const editPokemon = (pokemon) => {
         pokemon.name = capitalizeFirstLetter(pokemon.name);
         setPokemon({...pokemon});
@@ -139,30 +173,12 @@ const Pokemons = () => {
     };
 
 
-    const confirmDeleteSelected = () => {
-        setDeletePokemonsDialog(true);
-    };
 
-    const deleteSelectedPokemons = async () => {
-        try {
-            for (const element of selectedPokemons) {
-                await pokemonService.deletePokemon(element);
-            }
 
-            let _pokemons = pokemons.filter((val) => !selectedPokemons.includes(val));
-            setPokemons(_pokemons);
-            setDeletePokemonsDialog(false);
-            setSelectedPokemons(null);
 
-            toast.current.show({severity: 'success', summary: 'Successful', detail: 'Pokemons Deleted', life: 3000});
-        } catch (error) {
-            console.error('Delete error:', error);
-            toast.current.show({severity: 'danger', summary: 'Error', detail: 'Failed to delete pokemons', life: 3000});
-        }
-    };
 
     const onInputChange = (e, name) => {
-        const val = (e.target && e.target.value) || '';
+        const val = (e.target.value && e.target) || '';
         let _pokemon = {...pokemon};
         _pokemon[`${name}`] = val;
 
@@ -174,7 +190,6 @@ const Pokemons = () => {
             <React.Fragment>
                 <div className="my-2">
                     <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew}/>
-                    <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedPokemons || !selectedPokemons.length}/>
                 </div>
             </React.Fragment>
         );
@@ -191,42 +206,47 @@ const Pokemons = () => {
             <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deletePokemon}/>
         </>
     );
-    const deletePokemonsDialogFooter = (
-        <>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeletePokemonsDialog}/>
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedPokemons}/>
-        </>
-    );
+
     const [first, setFirst] = useState(0);
     const [rows, setRows] = useState(12);
+
+
     const onPageChange = (event) => {
         setFirst(event.first);
         setRows(event.rows);
-        const updatedFilter = {
+        setFilter({
             ...filter,
             page: event.first / event.rows,
             size: event.rows
-        };
-        getPokemons(updatedFilter);
+        });
+        getPokemons();
     };
     const listItem = (pokemon) => {
         return (
             <div className="col-12">
-                <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-                    <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={`${pokemon.imageUrl}`} alt={pokemon.name}/>
+                <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4 h-full">
+                    <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round h-full" src={`${pokemon.imageUrl}`} alt={pokemon.name}/>
                     <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                         <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                            <div className="text-2xl font-bold text-900">{pokemon.name}</div>
+                            <div className="text-2xl font-bold text-900">{capitalizeFirstLetter(pokemon.name)   }</div>
                             <div className="flex align-items-center gap-3">
                                 <span className="flex align-items-center gap-2">
-                                    <i className="pi pi-tag"></i>
-                                    <span className="font-semibold">{pokemon.category}</span>
-                                </span>
+                                   <div className="flex justify-content-evenly w-full">
+                                {pokemon.types.map((type) => (
+                                    <div key={type.id} className="flex align-items-center gap-2  flex-column">
+                                        <img  className="w-12  h-4rem mb-2 mt-2" src={getTypeIcon(type.name)} alt={type.name}/>
+                                        {capitalizeFirstLetter(type.name)}
+                                    </div>
+                                ))}
                             </div>
+                                </span>
+
+                            </div>
+                            <div className="text-xl">Abilities : {pokemon.abilities.map((ability) => capitalizeFirstLetter(ability.name)).join(" - ")}</div>
                         </div>
                         <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                            <span className="text-2xl font-semibold">${pokemon.price}</span>
-                            <Button icon="pi pi-shopping-cart" className="p-button-rounded" disabled={pokemon.inventoryStatus === 'OUTOFSTOCK'}></Button>
+                            <Button icon="pi pi-pencil" className="p-button-rounded p-button-success" onClick={() => editPokemon(pokemon)}/>
+                            <Button icon="pi pi-trash" className="p-button-rounded p-button-warning"  onClick={() => confirmDeletePokemon(pokemon)}/>
                         </div>
                     </div>
                 </div>
@@ -238,26 +258,26 @@ const Pokemons = () => {
     }
     const getTypeIcon = (typeName) => {
         try {
-            console.log(typeName)
             return `assets/icons/${typeName.toLowerCase()}.png`;
         } catch (error) {
             return null;
         }
     }
+    const defaultImage = 'assets/icons/unknown-pokemon.png';
     const gridItem = (pokemon) => {
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
-                <div className="p-4 border-1 surface-border surface-card border-round">
+                <div className="p-4 border-1 surface-border surface-card border-round h-full">
                     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
 
                     </div>
                     <div className="flex flex-column align-items-center gap-3 py-5">
-                        <img className="w-9  h-10rem" src={`${pokemon.imageUrl}`} alt={pokemon.name}/>
+                        <img className="w-9  h-10rem" src={`${pokemon.imageUrl || defaultImage}`} alt={pokemon.name}/>
                         <div className="text-2xl font-bold">{capitalizeFirstLetter(pokemon.name)}</div>
 
                             <div className="flex justify-content-evenly w-full">
                                 {pokemon.types.map((type) => (
-                                    <div className="flex align-items-center gap-2  flex-column">
+                                    <div  key={type.id} className="flex align-items-center gap-2  flex-column">
                                         <img className="w-12  h-4rem mb-2 mt-2" src={getTypeIcon(type.name)} alt={type.name}/>
                                         {capitalizeFirstLetter(type.name)}
                                     </div>
@@ -282,6 +302,24 @@ const Pokemons = () => {
         if (layout === 'list') return listItem(product);
         else if (layout === 'grid') return gridItem(product);
     };
+    const handleAbilityChange = (e) => {
+        const { value } = e.target;
+        setFilter({ ...filter, ability: value });
+    };
+    const handleNameChange = (e) => {
+        const { value } = e.target;
+        setFilter({ ...filter, name: value });
+    };
+    const handleWeightChange = (e) => {
+        setFilter({ ...filter, weight: e.value });
+    };
+    const handleHeightChange = (e) => {
+        setFilter({ ...filter, height: e.value });
+    };
+
+    const handleBaseExperienceChange = (e) => {
+        setFilter({ ...filter, baseExperience: e.value });
+    };
 
     const header = () => {
         return (
@@ -294,11 +332,73 @@ const Pokemons = () => {
     return (
         <div className="grid crud-demo">
             <div className="col-12">
+
                 <div className="card">
+                    <Accordion activeIndex={0} className="mb-4">
+                        <AccordionTab header="Filter">
+                            <form >
+                                <div style={{ minHeight: '40px', gap: '20px' }} className="flex mb-3 ">
+                                    <InputText
+                                        value={filter.name}
+                                        placeholder="Name"
+                                        onChange={handleNameChange}
+                                        style={{width:'100%'}}
+                                    />
+                                    <InputNumber
+                                        value={filter.weight}
+                                        placeholder="Weight"
+                                        onChange={handleWeightChange}
+                                        style={{width:'100%'}}
+                                    />
+                                    <InputNumber
+                                        value={filter.height}
+                                        placeholder="Height"
+                                        onChange={handleHeightChange}
+                                        style={{width:'100%'}}
+                                    />
+                                    <InputNumber
+                                        value={filter.baseExperience}
+                                        placeholder="Base Experience"
+                                        onChange={handleBaseExperienceChange}
+                                        style={{width:'100%'}}
+                                    />
+
+                                    <InputText
+                                        value={filter.ability}
+                                        placeholder="Ability"
+                                        onChange={handleAbilityChange}
+                                        style={{width:'100%'}}
+                                    />
+                                    <Dropdown value={selectedType} onChange={(e) => {
+                                        setSelectedType(e.value); setSelectedTypeFilter(e.value)
+                                    }} options={types} optionLabel="name"
+                                              placeholder="Select a Type" className="w-full md:w-14rem" />
+
+
+                                </div>
+                                <div style={{ minHeight: '40px', gap: '20px' }} className="input-group-filter mb-3">
+                                    <div className='flex mb-2'>
+                                        <Button
+                                            label="Clear"
+                                            icon="pi pi-times"
+                                            className="p-button-danger w-full mr-2"
+                                            onClick={clearFilters}
+                                        />
+                                        <Button
+                                            label="Filter"
+                                            icon="pi pi-times"
+                                            onClick={getPokemons}
+                                            className="p-button-secondary w-full mr-2"
+                                        />
+                                    </div>
+                                </div>
+                            </form>
+                        </AccordionTab>
+                    </Accordion>
                     <Toast ref={toast}/>
                     <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
 
-                    <DataView value={pokemons} itemTemplate={itemTemplate} layout={layout} header={header()}/>
+                    <DataView dataKey="id" value={pokemons} itemTemplate={itemTemplate} layout={layout} header={header()}/>
                     <div className="card">
                         <Paginator first={first} rows={rows} totalRecords={totalElements} onPageChange={onPageChange}/>
                     </div>
@@ -321,12 +421,7 @@ const Pokemons = () => {
                         </div>
                     </Dialog>
 
-                    <Dialog visible={deletePokemonsDialog} style={{width: '450px'}} header="Confirm" modal footer={deletePokemonsDialogFooter} onHide={hideDeletePokemonsDialog}>
-                        <div className="flex align-items-center justify-content-center">
-                            <i className="pi pi-exclamation-triangle mr-3" style={{fontSize: '2rem'}}/>
-                            {pokemon && <span>Are you sure you want to delete the selected pokemons?</span>}
-                        </div>
-                    </Dialog>
+
                 </div>
             </div>
         </div>
