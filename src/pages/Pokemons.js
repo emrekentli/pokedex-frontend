@@ -66,23 +66,33 @@ const Pokemons = () => {
     const [selectedType, setSelectedType] = useState(null);
     const pokemonService = new PokemonService();
     const typeService = new TypeService();
+
+    const fetchTypes = () => {
+typeService.getTypes({
+            page: 0,
+            size: 100,
+    }).then(data => {
+            setTypes(data.items.content);
+        });
+    }
+
     const [types, setTypes] = useState([]);
+
     useEffect(() => {
-        typeService.getTypes()
-            .then((typesData) => {
-                setTypes(typesData.items.content);
-            })
-            .catch((error) => {
-                console.error('Error fetching types:', error);
-            });
-        getPokemons();
+        fetchTypes();
+
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
+
+
+    useEffect(() => {
+        fetchPokemons();
         // eslint-disable-next-line
-    }, []);
+    }, [filter]);
 
     const setSelectedTypeFilter = (e) => {
         setFilter({...filter, type: e ? e.name : null});
     }
-    const getPokemons = () => {
+    const fetchPokemons = () => {
         pokemonService.getPokemons(filter).then((data) => {
             setTotalElements(data.items.totalElements);
             setPokemons(data.items.content);
@@ -216,10 +226,9 @@ const Pokemons = () => {
         setRows(event.rows);
         setFilter({
             ...filter,
-            page: event.first / event.rows,
+            page: event.page,
             size: event.rows
         });
-        getPokemons();
     };
     const listItem = (pokemon) => {
         return (
@@ -387,7 +396,7 @@ const Pokemons = () => {
                                         <Button
                                             label="Filter"
                                             icon="pi pi-times"
-                                            onClick={getPokemons}
+                                            onClick={fetchPokemons}
                                             className="p-button-secondary w-full mr-2"
                                         />
                                     </div>
