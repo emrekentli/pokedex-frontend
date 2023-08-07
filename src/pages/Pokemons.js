@@ -88,16 +88,16 @@ typeService.getTypes({
         fetchPokemons();
         // eslint-disable-next-line
     }, [filter]);
-
-    const setSelectedTypeFilter = (e) => {
-        setFilter({...filter, type: e ? e.name : null});
-    }
     const fetchPokemons = () => {
         pokemonService.getPokemons(filter).then((data) => {
             setTotalElements(data.items.totalElements);
             setPokemons(data.items.content);
         });
     }
+    const setSelectedTypeFilter = (e) => {
+        setFilter({...filter, type: e ? e.name : null});
+    }
+
     const openNew = () => {
         setPokemon(emptyPokemon);
         setSubmitted(false);
@@ -188,10 +188,10 @@ typeService.getTypes({
 
 
     const onInputChange = (e, name) => {
+        console.log(e,name);
         const val = (e.target.value && e.target) || '';
         let _pokemon = {...pokemon};
         _pokemon[`${name}`] = val;
-
         setPokemon(_pokemon);
     };
 
@@ -416,6 +416,18 @@ typeService.getTypes({
                             <label htmlFor="name">Name</label>
                             <InputText id="name" value={pokemon.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({'p-invalid': submitted && !pokemon.name})}/>
                             {submitted && !pokemon.name && <small className="p-invalid">Name is required.</small>}
+                        </div>
+                        <div className="field">
+                            <label htmlFor="weight">Weight</label>
+                            <InputNumber id="weight" value={pokemon.weight} onChange={(e) => onInputChange(e, 'weight')}/>
+                        </div>
+                        <div className="field">
+                            <label htmlFor="height">Height</label>
+                            <InputNumber id="height" value={pokemon.height} onChange={(e) => onInputChange(e, 'height')}/>
+                        </div>
+                        <div className="field">
+                            <label htmlFor="baseExperience">Base Experience</label>
+                            <InputNumber id="baseExperience" value={pokemon.baseExperience} onChange={(e) => onInputChange(e, 'baseExperience')}/>
                         </div>
                     </Dialog>
 
