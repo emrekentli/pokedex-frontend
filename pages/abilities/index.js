@@ -194,10 +194,10 @@ const Abilities = (props) => {
     const actionBodyTemplate = (rowData) => {
         return (
             <div className="actions">
-                { props.isSelect && <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2"
+                { !props.isSelect && <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2"
                          onClick={() => editAbility(rowData)}/>}
-                { props.isSelect && <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteAbility(rowData)} /> }
-                { !props.isSelect && <Button label="Select" className="p-button-rounded p-button-success mt-2"
+                { !props.isSelect && <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteAbility(rowData)} /> }
+                { props.isSelect && <Button label="Select" className="p-button-rounded p-button-success mt-2"
                          onClick={() => props.setAbility(rowData)}/>}
             </div>
         );

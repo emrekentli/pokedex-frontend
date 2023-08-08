@@ -339,7 +339,7 @@ const Pokemons = () => {
 
             <Dialog visible={abilityComponentDialog}  onHide={hideAbilityComponentDialog} style={{width: '80%'}} header="Ability" modal>
                 <div className="field">
-                    <Abilities select={true} setAbility={setAbilityOnEditMode}></Abilities>
+                    <Abilities isSelect={true} setAbility={setAbilityOnEditMode}></Abilities>
                 </div>
             </Dialog>
         </div>
