@@ -97,7 +97,13 @@ const Pokemons = () => {
             setTypes(data.items.content);
         });
     }
-
+    const valueTemplate = (value) => {
+        return (
+            <React.Fragment>
+                {value}
+            </React.Fragment>
+        );
+    };
     const [types, setTypes] = useState([]);
 
     useEffect(() => {
@@ -255,7 +261,7 @@ const Pokemons = () => {
                         <div key={stat.id} className="flex align-items-center mb-3">
                             <div className="w-2 mr-3">{capitalizeFirstLetter(stat.stat.name)}</div>
                             <div className="w-full">
-                                <ProgressBar value={stat.statPoint}/>
+                                <ProgressBar value={stat.statPoint} displayValueTemplate={valueTemplate}/>
                             </div>
                             {editMode && <Button icon="pi pi-times" className="p-button-icon  p-button-danger ml-3 p-0"
                                                  onClick={() => confirmDeleteStat(stat)}/>}
