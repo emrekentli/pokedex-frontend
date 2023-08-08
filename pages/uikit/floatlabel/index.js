@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { InputMask } from 'primereact/inputmask';
-import { InputNumber } from 'primereact/inputnumber';
-import { AutoComplete } from 'primereact/autocomplete';
-import { Calendar } from 'primereact/calendar';
-import { Chips } from 'primereact/chips';
-import { Dropdown } from 'primereact/dropdown';
-import { MultiSelect } from 'primereact/multiselect';
-import { CountryService } from '../../../demo/service/CountryService';
+import React, {useEffect, useState} from 'react';
+import {InputText} from 'primereact/inputtext';
+import {InputTextarea} from 'primereact/inputtextarea';
+import {InputMask} from 'primereact/inputmask';
+import {InputNumber} from 'primereact/inputnumber';
+import {AutoComplete} from 'primereact/autocomplete';
+import {Calendar} from 'primereact/calendar';
+import {Chips} from 'primereact/chips';
+import {Dropdown} from 'primereact/dropdown';
+import {MultiSelect} from 'primereact/multiselect';
+import {CountryService} from '../../../demo/service/CountryService';
 
 const FloatLabelDemo = () => {
     const [countries, setCountries] = useState([]);

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Dropdown } from 'primereact/dropdown';
+import React, {useState} from 'react';
+import {InputText} from 'primereact/inputtext';
+import {Button} from 'primereact/button';
+import {InputTextarea} from 'primereact/inputtextarea';
+import {Dropdown} from 'primereact/dropdown';
 
 const FormLayoutDemo = () => {
     const [dropdownItem, setDropdownItem] = useState(null);

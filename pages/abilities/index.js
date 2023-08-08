@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { classNames } from 'primereact/utils';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { Toast } from 'primereact/toast';
-import { Button } from 'primereact/button';
-import { Toolbar } from 'primereact/toolbar';
-import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
+import React, {useEffect, useRef, useState} from 'react';
+import {classNames} from 'primereact/utils';
+import {DataTable} from 'primereact/datatable';
+import {Column} from 'primereact/column';
+import {Toast} from 'primereact/toast';
+import {Button} from 'primereact/button';
+import {Toolbar} from 'primereact/toolbar';
+import {Dialog} from 'primereact/dialog';
+import {InputText} from 'primereact/inputtext';
 import AbilityService from '../../demo/service/AbilityService';
-import { Paginator } from 'primereact/paginator';
-const Abilities = () => {
+import {Paginator} from 'primereact/paginator';
+
+const Abilities = (props) => {
     let emptyAbility = {
         id: null,
         name: '',
@@ -88,7 +89,7 @@ const Abilities = () => {
               setAbility(emptyAbility);
               toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Ability Created', life: 3000 });
             }).catch(error => {
-                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: error.getBody(), life: 3000 });
             });
           }
         }
@@ -142,8 +143,8 @@ const Abilities = () => {
 
     const deleteSelectedAbilities = async () => {
         try {
-          for (let i = 0; i < selectedAbilities.length; i++) {
-            await abilityService.deleteAbility(selectedAbilities[i]);
+          for (const element of selectedAbilities) {
+              await abilityService.deleteAbility(element);
           }
       
           let _abilities = abilities.filter((val) => !selectedAbilities.includes(val));
@@ -193,8 +194,11 @@ const Abilities = () => {
     const actionBodyTemplate = (rowData) => {
         return (
             <div className="actions">
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editAbility(rowData)} />
-                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteAbility(rowData)} />
+                { props.isSelect && <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2"
+                         onClick={() => editAbility(rowData)}/>}
+                { props.isSelect && <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteAbility(rowData)} /> }
+                { !props.isSelect && <Button label="Select" className="p-button-rounded p-button-success mt-2"
+                         onClick={() => props.setAbility(rowData)}/>}
             </div>
         );
     };

@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Dialog } from 'primereact/dialog';
-import { Button } from 'primereact/button';
-import { Sidebar } from 'primereact/sidebar';
-import { Toast } from 'primereact/toast';
-import { Column } from 'primereact/column';
-import { DataTable } from 'primereact/datatable';
-import { OverlayPanel } from 'primereact/overlaypanel';
-import { InputText } from 'primereact/inputtext';
-import { confirmPopup, ConfirmPopup } from 'primereact/confirmpopup';
-import { ProductService } from '../../../demo/service/ProductService';
+import React, {useEffect, useRef, useState} from 'react';
+import {Dialog} from 'primereact/dialog';
+import {Button} from 'primereact/button';
+import {Sidebar} from 'primereact/sidebar';
+import {Toast} from 'primereact/toast';
+import {Column} from 'primereact/column';
+import {DataTable} from 'primereact/datatable';
+import {OverlayPanel} from 'primereact/overlaypanel';
+import {InputText} from 'primereact/inputtext';
+import {confirmPopup, ConfirmPopup} from 'primereact/confirmpopup';
+import {ProductService} from '../../../demo/service/ProductService';
 
 const OverlayDemo = () => {
     const [displayBasic, setDisplayBasic] = useState(false);

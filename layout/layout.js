@@ -1,13 +1,13 @@
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useEventListener, useMountEffect, useUnmountEffect } from 'primereact/hooks';
-import { classNames, DomHandler } from 'primereact/utils';
-import React, { useContext, useEffect, useRef } from 'react';
+import {useRouter} from 'next/router';
+import {useEventListener, useMountEffect, useUnmountEffect} from 'primereact/hooks';
+import {classNames, DomHandler} from 'primereact/utils';
+import React, {useContext, useEffect, useRef} from 'react';
 import AppFooter from './AppFooter';
 import AppSidebar from './AppSidebar';
 import AppTopbar from './AppTopbar';
 import AppConfig from './AppConfig';
-import { LayoutContext } from './context/layoutcontext';
+import {LayoutContext} from './context/layoutcontext';
 import PrimeReact from 'primereact/api';
 
 const Layout = (props) => {

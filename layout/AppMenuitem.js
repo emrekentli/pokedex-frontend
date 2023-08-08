@@ -1,10 +1,10 @@
-import { useRouter } from 'next/router';
+import {useRouter} from 'next/router';
 import Link from 'next/link';
-import { Ripple } from 'primereact/ripple';
-import { classNames } from 'primereact/utils';
-import React, { useEffect, useContext } from 'react';
-import { CSSTransition } from 'react-transition-group';
-import { MenuContext } from './context/menucontext';
+import {Ripple} from 'primereact/ripple';
+import {classNames} from 'primereact/utils';
+import React, {useContext, useEffect} from 'react';
+import {CSSTransition} from 'react-transition-group';
+import {MenuContext} from './context/menucontext';
 
 const AppMenuitem = (props) => {
     const { activeMenu, setActiveMenu } = useContext(MenuContext);

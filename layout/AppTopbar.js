@@ -1,8 +1,7 @@
 import Link from 'next/link';
-import Router, { useRouter } from 'next/router';
-import { classNames } from 'primereact/utils';
-import React, { forwardRef, useContext, useImperativeHandle, useRef } from 'react';
-import { LayoutContext } from './context/layoutcontext';
+import {classNames} from 'primereact/utils';
+import React, {forwardRef, useContext, useImperativeHandle, useRef} from 'react';
+import {LayoutContext} from './context/layoutcontext';
 
 const AppTopbar = forwardRef((props, ref) => {
     const { layoutConfig, layoutState, onMenuToggle, showProfileSidebar } = useContext(LayoutContext);

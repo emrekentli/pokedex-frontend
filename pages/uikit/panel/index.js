@@ -1,17 +1,16 @@
-import React, { useRef } from 'react';
-import { Toolbar } from 'primereact/toolbar';
-import { Button } from 'primereact/button';
-import { SplitButton } from 'primereact/splitbutton';
-import { Accordion, AccordionTab } from 'primereact/accordion';
-import { TabView, TabPanel } from 'primereact/tabview';
-import { Panel } from 'primereact/panel';
-import { Fieldset } from 'primereact/fieldset';
-import { Card } from 'primereact/card';
-import { Divider } from 'primereact/divider';
-import { InputText } from 'primereact/inputtext';
-import { Splitter, SplitterPanel } from 'primereact/splitter';
-import { Password } from 'primereact/password';
-import { Menu } from 'primereact/menu';
+import React, {useRef} from 'react';
+import {Toolbar} from 'primereact/toolbar';
+import {Button} from 'primereact/button';
+import {SplitButton} from 'primereact/splitbutton';
+import {Accordion, AccordionTab} from 'primereact/accordion';
+import {TabPanel, TabView} from 'primereact/tabview';
+import {Panel} from 'primereact/panel';
+import {Fieldset} from 'primereact/fieldset';
+import {Card} from 'primereact/card';
+import {Divider} from 'primereact/divider';
+import {InputText} from 'primereact/inputtext';
+import {Splitter, SplitterPanel} from 'primereact/splitter';
+import {Menu} from 'primereact/menu';
 
 const PanelDemo = () => {
     const menu1 = useRef(null);

@@ -1,12 +1,13 @@
-import { Button } from 'primereact/button';
-import { Chart } from 'primereact/chart';
-import { Column } from 'primereact/column';
-import { DataTable } from 'primereact/datatable';
-import { Menu } from 'primereact/menu';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { ProductService } from '../demo/service/ProductService';
-import { LayoutContext } from '../layout/context/layoutcontext';
+import {Button} from 'primereact/button';
+import {Chart} from 'primereact/chart';
+import {Column} from 'primereact/column';
+import {DataTable} from 'primereact/datatable';
+import {Menu} from 'primereact/menu';
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {ProductService} from '../demo/service/ProductService';
+import {LayoutContext} from '../layout/context/layoutcontext';
 import Link from 'next/link';
+
 const lineData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [

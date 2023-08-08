@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Menubar } from 'primereact/menubar';
-import { InputText } from 'primereact/inputtext';
-import { BreadCrumb } from 'primereact/breadcrumb';
-import { Steps } from 'primereact/steps';
-import { TabMenu } from 'primereact/tabmenu';
-import { TieredMenu } from 'primereact/tieredmenu';
-import { Menu } from 'primereact/menu';
-import { Button } from 'primereact/button';
-import { ContextMenu } from 'primereact/contextmenu';
-import { MegaMenu } from 'primereact/megamenu';
-import { PanelMenu } from 'primereact/panelmenu';
-import { useRouter } from 'next/router';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {Menubar} from 'primereact/menubar';
+import {InputText} from 'primereact/inputtext';
+import {BreadCrumb} from 'primereact/breadcrumb';
+import {Steps} from 'primereact/steps';
+import {TabMenu} from 'primereact/tabmenu';
+import {TieredMenu} from 'primereact/tieredmenu';
+import {Menu} from 'primereact/menu';
+import {Button} from 'primereact/button';
+import {ContextMenu} from 'primereact/contextmenu';
+import {MegaMenu} from 'primereact/megamenu';
+import {PanelMenu} from 'primereact/panelmenu';
+import {useRouter} from 'next/router';
 
 const MenuDemo = ({ children }) => {
     const [activeIndex, setActiveIndex] = useState(0);

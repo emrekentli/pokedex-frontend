@@ -12,6 +12,7 @@ import {Accordion, AccordionTab} from 'primereact/accordion';
 import {Dropdown} from 'primereact/dropdown';
 import TypeService from '../../demo/service/TypeService';
 import {InputNumber} from "primereact/inputnumber";
+import {useRouter} from "next/router";
 
 const Pokemons = () => {
     let emptyPokemon = {
@@ -34,6 +35,7 @@ const Pokemons = () => {
     const [submitted, setSubmitted] = useState(false);
     const toast = useRef(null);
     const [totalElements, setTotalElements] = useState(0);
+    const router = useRouter();
 
 
     const [filter, setFilter] = useState({
@@ -63,10 +65,10 @@ const Pokemons = () => {
         });
         setSelectedType(null);
     };
-    const [selectedType, setSelectedType] = useState(null);
+
     const pokemonService = new PokemonService();
     const typeService = new TypeService();
-
+    const [selectedType, setSelectedType] = useState(null);
     const fetchTypes = () => {
 typeService.getTypes({
             page: 0,
@@ -170,6 +172,7 @@ typeService.getTypes({
         );
     };
 
+
     const findIndexById = (id) => {
         let index = -1;
         for (let i = 0; i < pokemons.length; i++) {
@@ -250,7 +253,7 @@ typeService.getTypes({
                         </div>
                         <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
                             <Button icon="pi pi-pencil" className="p-button-rounded p-button-success" onClick={() => editPokemon(pokemon)}/>
-                            <Button icon="pi pi-eye" className="p-button-rounded p-button-warning" onClick={() => editPokemon(pokemon)}/>
+                            <Button icon="pi pi-eye" className="p-button-rounded p-button-secondary" onClick={() => goToDetail(pokemon)}/>
                             <Button icon="pi pi-trash" className="p-button-rounded p-button-warning"  onClick={() => confirmDeletePokemon(pokemon)}/>
                         </div>
                     </div>
@@ -269,6 +272,9 @@ typeService.getTypes({
         }
     }
     const defaultImage = 'assets/icons/unknown-pokemon.png';
+    const goToDetail = (pokemon) => {
+        router.push(`/pokemons/${pokemon.id}`);
+    };
     const gridItem = (pokemon) => {
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
@@ -292,6 +298,7 @@ typeService.getTypes({
                     </div>
                     <div className="flex align-items-center justify-content-between">
                         <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editPokemon(pokemon)}/>
+                        <Button icon="pi pi-eye" className="p-button-rounded p-button-secondary" onClick={() => goToDetail(pokemon)}/>
                         <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeletePokemon(pokemon)}/>
                     </div>
 

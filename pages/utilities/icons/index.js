@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-sync-scripts */
-import React, { useEffect, useState } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { IconService } from '../../../demo/service/IconService';
+import React, {useEffect, useState} from 'react';
+import {InputText} from 'primereact/inputtext';
+import {IconService} from '../../../demo/service/IconService';
 import Link from 'next/link';
 
 const IconsDemo = () => {

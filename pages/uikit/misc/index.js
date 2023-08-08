@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ProgressBar } from 'primereact/progressbar';
-import { Button } from 'primereact/button';
-import { Badge } from 'primereact/badge';
-import { Tag } from 'primereact/tag';
-import { Avatar } from 'primereact/avatar';
-import { AvatarGroup } from 'primereact/avatargroup';
-import { Chip } from 'primereact/chip';
-import { Skeleton } from 'primereact/skeleton';
-import { ScrollPanel } from 'primereact/scrollpanel';
-import { ScrollTop } from 'primereact/scrolltop';
+import React, {useEffect, useRef, useState} from 'react';
+import {ProgressBar} from 'primereact/progressbar';
+import {Button} from 'primereact/button';
+import {Badge} from 'primereact/badge';
+import {Tag} from 'primereact/tag';
+import {Avatar} from 'primereact/avatar';
+import {AvatarGroup} from 'primereact/avatargroup';
+import {Chip} from 'primereact/chip';
+import {Skeleton} from 'primereact/skeleton';
+import {ScrollPanel} from 'primereact/scrollpanel';
+import {ScrollTop} from 'primereact/scrolltop';
 
 const MiscDemo = () => {
     const [value, setValue] = useState(0);

@@ -1,11 +1,11 @@
 import PrimeReact from 'primereact/api';
-import { Button } from 'primereact/button';
-import { InputSwitch } from 'primereact/inputswitch';
-import { RadioButton } from 'primereact/radiobutton';
-import { Sidebar } from 'primereact/sidebar';
-import { classNames } from 'primereact/utils';
-import React, { useContext, useEffect, useState } from 'react';
-import { LayoutContext } from './context/layoutcontext';
+import {Button} from 'primereact/button';
+import {InputSwitch} from 'primereact/inputswitch';
+import {RadioButton} from 'primereact/radiobutton';
+import {Sidebar} from 'primereact/sidebar';
+import {classNames} from 'primereact/utils';
+import React, {useContext, useEffect, useState} from 'react';
+import {LayoutContext} from './context/layoutcontext';
 
 const AppConfig = (props) => {
     const [scales] = useState([12, 13, 14, 15, 16]);

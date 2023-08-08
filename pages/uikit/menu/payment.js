@@ -1,5 +1,6 @@
 import React from 'react';
 import Menu from './index';
+
 function PaymentDemo() {
     return (
         <Menu>

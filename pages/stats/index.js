@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { classNames } from 'primereact/utils';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { Toast } from 'primereact/toast';
-import { Button } from 'primereact/button';
-import { Toolbar } from 'primereact/toolbar';
-import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
+import React, {useEffect, useRef, useState} from 'react';
+import {classNames} from 'primereact/utils';
+import {DataTable} from 'primereact/datatable';
+import {Column} from 'primereact/column';
+import {Toast} from 'primereact/toast';
+import {Button} from 'primereact/button';
+import {Toolbar} from 'primereact/toolbar';
+import {Dialog} from 'primereact/dialog';
+import {InputText} from 'primereact/inputtext';
 import StatService from '../../demo/service/StatService';
-import { Paginator } from 'primereact/paginator';
+import {Paginator} from 'primereact/paginator';
+
 const Stats = () => {
     let emptyStat = {
         id: null,

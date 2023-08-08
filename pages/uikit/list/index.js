@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
-import { Button } from 'primereact/button';
-import { Dropdown } from 'primereact/dropdown';
-import { Rating } from 'primereact/rating';
-import { PickList } from 'primereact/picklist';
-import { OrderList } from 'primereact/orderlist';
-import { ProductService } from '../../../demo/service/ProductService';
-import { InputText } from 'primereact/inputtext';
+import React, {useEffect, useState} from 'react';
+import {DataView, DataViewLayoutOptions} from 'primereact/dataview';
+import {Button} from 'primereact/button';
+import {Dropdown} from 'primereact/dropdown';
+import {Rating} from 'primereact/rating';
+import {PickList} from 'primereact/picklist';
+import {OrderList} from 'primereact/orderlist';
+import {ProductService} from '../../../demo/service/ProductService';
+import {InputText} from 'primereact/inputtext';
 
 const ListDemo = () => {
     const listValue = [

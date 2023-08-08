@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import AppMenuitem from './AppMenuitem';
-import { LayoutContext } from './context/layoutcontext';
-import { MenuProvider } from './context/menucontext';
+import {LayoutContext} from './context/layoutcontext';
+import {MenuProvider} from './context/menucontext';
 import Link from 'next/link';
 
 const AppMenu = () => {

@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
-import { FileUpload } from 'primereact/fileupload';
-import { Toast } from 'primereact/toast';
+import React, {useRef} from 'react';
+import {FileUpload} from 'primereact/fileupload';
+import {Toast} from 'primereact/toast';
 
 const FileDemo = () => {
     const toast = useRef(null);

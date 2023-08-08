@@ -1,6 +1,6 @@
-import { Tooltip } from 'primereact/tooltip';
-import { classNames } from 'primereact/utils';
-import React, { useRef, useState } from 'react';
+import {Tooltip} from 'primereact/tooltip';
+import {classNames} from 'primereact/utils';
+import React, {useRef, useState} from 'react';
 
 const BlockViewer = (props) => {
     const [blockView, setBlockView] = useState('PREVIEW');

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Button } from 'primereact/button';
-import { SplitButton } from 'primereact/splitbutton';
+import React, {useState} from 'react';
+import {Button} from 'primereact/button';
+import {SplitButton} from 'primereact/splitbutton';
 import styles from './index.module.scss';
 
 const ButtonDemo = () => {
