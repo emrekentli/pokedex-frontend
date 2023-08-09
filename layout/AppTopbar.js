@@ -22,6 +22,13 @@ const AppTopbar = forwardRef((props, ref) => {
     }));
     const items = [
         {
+            label: 'My Profile',
+            icon: 'pi pi-fw pi-user',
+            command: () => {
+                router.push("/profile");
+            }
+        },
+        {
             label: 'Quit',
             icon: 'pi pi-fw pi-power-off',
             command: () => {

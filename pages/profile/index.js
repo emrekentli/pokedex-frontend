@@ -9,23 +9,25 @@ import {Dialog} from 'primereact/dialog';
 import {InputText} from 'primereact/inputtext';
 import UserService from '../../data/service/api-calls/UserService';
 import {Paginator} from 'primereact/paginator';
+import {TabPanel, TabView} from "primereact/tabview";
+import PokemonService from "../../data/service/api-calls/PokemonService";
 
-const Users = (props) => {
-    let emptyUser = {
+const Profile = (props) => {
+    let emptyPokemon = {
         id: null,
-        fullName: '',
-        email: '',
-        phoneNumber: '',
-        userName: '',
-        created:null
+        name: '',
+        created: null,
+        baseExperience: null,
+        height: null,
+        weight: null,
+        imageUrl: '',
+        types: [],
+        abilities: [],
+        stats: []
     };
-
-    const [users, setUsers] = useState(null);
-    const [userDialog, setUserDialog] = useState(false);
-    const [deleteUserDialog, setDeleteUserDialog] = useState(false);
-    const [deleteUsersDialog, setDeleteUsersDialog] = useState(false);
-    const [user, setUser] = useState(emptyUser);
-    const [selectedUsers, setSelectedUsers] = useState(null);
+    const [catchlist, setCatchlist] = useState(null);
+    const [pokemonDialog, setPokemonDialog] = useState(false);
+    const [deletePokemonDialog, setDeletePokemonDialog] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const toast = useRef(null);
     const dt = useRef(null);
@@ -36,85 +38,35 @@ const Users = (props) => {
         sort: 'created,desc',
         name: null
     };
-    const userService = new UserService();
+    const pokemonService = new PokemonService();
     useEffect(() => {
-        getUsers(filter);
+        getCatchlist(filter);
         // eslint-disable-next-line
     }, []);
 
-    const getUsers = (filter) => {
-        userService.getUsers(filter).then((data) => {
-            setTotalElements(data.data.data.items.totalElements);
-            setUsers(data.data.data.items.content);
-            });
+    const getCatchlist = (filter) => {
+
         }
-    const openNew = () => {
-        setUser(emptyUser);
-        setSubmitted(false);
-        setUserDialog(true);
-    };
 
     const hideDialog = () => {
         setSubmitted(false);
-        setUserDialog(false);
+        setPokemonDialog(false);
     };
 
-    const hideDeleteUserDialog = () => {
-        setDeleteUserDialog(false);
+    const hideDeletePokemonDialog = () => {
+        setDeletePokemonDialog(false);
     };
 
-    const hideDeleteUsersDialog = () => {
-        setDeleteUsersDialog(false);
+    const confirmDeletePokemon = (pokemon) => {
+        setPokemon(pokemon);
+        setDeletePokemonDialog(true);
     };
 
-    const saveUser = () => {
-        setSubmitted(true);
-      
-        if (user.fullName.trim() && user.email.trim() && user.phoneNumber.trim() && user.userName.trim()) {
-          let _users = [...users];
-          let _user = { ...user };
-          if (user.id) {
-            userService.updateUser(_user).then(data => {
-              const index = findIndexById(user.id);
-              _users[index] = data.data.data;
-              setUsers(_users);
-              setUserDialog(false);
-              setUser(emptyUser);
-              toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
-            }).catch(error => {
-                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
-                        });
-          } else {
-            userService.createUser(_user).then(data => {
-              _users.push(data.data.data);
-              setUsers(_users);
-              setUserDialog(false);
-              setUser(emptyUser);
-              toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
-            }).catch(error => {
-                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Error!', life: 3000 });
-            });
-          }
-        }
-      };
-      
-
-    const editUser = (user) => {
-        setUser({ ...user });
-        setUserDialog(true);
-    };
-
-    const confirmDeleteUser = (user) => {
-        setUser(user);
-        setDeleteUserDialog(true);
-    };
-
-    const deleteUser = () => {
-        userService.deleteUser(user).then(data => {
-        
-            let _users = users.filter((val) => val.id !== user.id);
-            setUsers(_users);
-            setDeleteUserDialog(false);
+    const deletePokemon = () => {
+        pokemonService.deleteFromCatchlist(user).then(data => {
+            let _catchlist = catchlist.filter((val) => val.id !== user.id);
+            setCatchlist(_catchlist);
+            setDeletePokemonDialog(false);
             setUser(emptyUser);
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
         }).catch(error => {
@@ -124,13 +76,13 @@ const Users = (props) => {
     };
     const setNameToFilter = (name) => {
         filter.name = name;
-        getUsers(filter);
+        getCatchlist(filter);
     };
 
     const findIndexById = (id) => {
         let index = -1;
-        for (let i = 0; i < users.length; i++) {
-            if (users[i].id === id) {
+        for (let i = 0; i < catchlist.length; i++) {
+            if (catchlist[i].id === id) {
                 index = i;
                 break;
             }
@@ -147,18 +99,18 @@ const Users = (props) => {
     const deleteSelectedUsers = async () => {
         try {
           for (const element of selectedUsers) {
-              await userService.deleteUser(element);
+              await pokemonService.deleteUser(element);
           }
       
-          let _users = users.filter((val) => !selectedUsers.includes(val));
-          setUsers(_users);
+          let _users = catchlist.filter((val) => !selectedUsers.includes(val));
+          setCatchlist(_users);
           setDeleteUsersDialog(false);
           setSelectedUsers(null);
       
           toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000 });
         } catch (error) {
           console.error('Delete error:', error);
-          toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Failed to delete users', life: 3000 });
+          toast.current.show({ severity: 'danger', summary: 'Error', detail: 'Failed to delete catchlist', life: 3000 });
         }
       };
 
@@ -223,7 +175,7 @@ const Users = (props) => {
             <div className="actions">
                 { !props.isSelect && <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2"
                          onClick={() => editUser(rowData)}/>}
-                { !props.isSelect && <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteUser(rowData)} /> }
+                { !props.isSelect && <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeletePokemon(rowData)} /> }
                 { props.isSelect && <Button label="Select" className="p-button-rounded p-button-success mt-2"
                          onClick={() => props.setUser(rowData)}/>}
             </div>
@@ -248,8 +200,8 @@ const Users = (props) => {
     );
     const deleteUserDialogFooter = (
         <>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteUserDialog} />
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteUser} />
+            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeletePokemonDialog} />
+            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deletePokemon} />
         </>
     );
     const deleteUsersDialogFooter = (
@@ -268,41 +220,54 @@ const Users = (props) => {
             page: event.first / event.rows, // Yeni sayfa numarası
             size: event.rows // Yeni boyut
         };
-        getUsers(updatedFilter);
+        getCatchlist(updatedFilter);
     };
 
     return (
         <div className="grid crud-demo">
             <div className="col-12">
                 <div className="card">
-                    <Toast ref={toast} />
-                    <Toolbar className="mb-4" left={leftToolbarTemplate} ></Toolbar>
+                    <TabView>
+                        <TabPanel header="Catchlist">
+                            <Toast ref={toast} />
+                            <Toolbar className="mb-4" left={leftToolbarTemplate} ></Toolbar>
 
-                    <DataTable
-                        ref={dt}
-                        value={users}
-                        selection={selectedUsers}
-                        onSelectionChange={(e) => setSelectedUsers(e.value)}
-                        dataKey="id"
-                        rows={10}
-                        rowsPerPageOptions={[5, 10, 25]}
-                        className="datatable-responsive"
-                        emptyMessage="No users found."
-                        header={header}
-                        responsiveLayout="scroll"
-                    >
-                        <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
-                        <Column field="name" header="Name" sortable body={nameBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
-                        <Column field="email" header="Email" sortable body={emailBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
-                        <Column field="userName" header="Username" sortable body={usernameBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
-                        <Column field="phoneNumber" header="Phone Number" sortable body={phoneNumberBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                            <DataTable
+                                ref={dt}
+                                value={catchlist}
+                                selection={selectedUsers}
+                                onSelectionChange={(e) => setSelectedUsers(e.value)}
+                                dataKey="id"
+                                rows={10}
+                                rowsPerPageOptions={[5, 10, 25]}
+                                className="datatable-responsive"
+                                emptyMessage="No users found."
+                                header={header}
+                                responsiveLayout="scroll"
+                            >
+                                <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
+                                <Column field="name" header="Name" sortable body={nameBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                                <Column field="email" header="Email" sortable body={emailBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                                <Column field="userName" header="Username" sortable body={usernameBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                                <Column field="phoneNumber" header="Phone Number" sortable body={phoneNumberBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
 
-                        <Column body={actionBodyTemplate}></Column>
-                    </DataTable>
-                    <div className="card">
-            <Paginator first={first} rows={rows} totalRecords={totalElements} onPageChange={onPageChange} />
-        </div>
-                    <Dialog visible={userDialog} style={{ width: '450px' }} header="User" modal className="p-fluid" footer={userDialogFooter} onHide={hideDialog}>
+                                <Column body={actionBodyTemplate}></Column>
+                            </DataTable>
+                            <Paginator first={first} rows={rows} totalRecords={totalElements} onPageChange={onPageChange} />
+                        </TabPanel>
+                        <TabPanel header="Header II">
+                            <p className="m-0">
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam,
+                                eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo
+                                enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui
+                                ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                            </p>
+                        </TabPanel>
+
+                    </TabView>
+                </div>
+
+                    <Dialog visible={pokemonDialog} style={{ width: '450px' }} header="User" modal className="p-fluid" footer={userDialogFooter} onHide={hideDialog}>
                         <div className="field">
                             <label htmlFor="name">Name</label>
                             <InputText id="name" value={user.fullName} onChange={(e) => onInputChange(e, 'fullName')} required autoFocus className={classNames({ 'p-invalid': submitted && !user.fullName })} />
@@ -325,7 +290,7 @@ const Users = (props) => {
                         </div>
                     </Dialog>
 
-                    <Dialog visible={deleteUserDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteUserDialogFooter} onHide={hideDeleteUserDialog}>
+                    <Dialog visible={deletePokemonDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteUserDialogFooter} onHide={hideDeletePokemonDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {user && (
@@ -342,10 +307,9 @@ const Users = (props) => {
                             {user && <span>Are you sure you want to delete the selected users?</span>}
                         </div>
                     </Dialog>
-                </div>
             </div>
         </div>
     );
 };
 
-export default Users;
+export default Profile;
