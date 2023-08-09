@@ -1,15 +1,42 @@
 import {useRouter} from 'next/router';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import AppConfig from '../../../layout/AppConfig';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import {LayoutContext} from '../../../layout/context/layoutcontext';
 import {InputText} from 'primereact/inputtext';
 import {classNames} from 'primereact/utils';
+import LoginService from "../../../data/service/api-calls/LoginService";
+import {AuthenticationStore} from "../../../data/service/store/AuthenticationStore";
 
 const LoginPage = () => {
+    const authenticationStore = new AuthenticationStore();
+
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const { layoutConfig } = useContext(LayoutContext);
+    const loginService = new LoginService();
+
+    useEffect(() => {
+            if (authenticationStore.getToken()) {
+                console.log("token: " + authenticationStore.getToken());
+                router.push("/");
+            }
+    }, []);
+
+
+
+    const login = () => {
+        loginService.login({userName:  username, password: password}).then((res) => {
+            if (res.status !== 200) {
+                console.log("error");
+                return;
+            }
+            authenticationStore.setToken(res.data.data.token);
+            authenticationStore.setRoles(res.data.data.roles);
+            router.push("/");
+        })
+    }
 
     const router = useRouter();
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
@@ -28,7 +55,7 @@ const LoginPage = () => {
                             <label htmlFor="email1" className="block text-900 text-xl font-medium mb-2">
                                 Email
                             </label>
-                            <InputText inputid="email1" type="text" placeholder="Email address" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
+                            <InputText inputid="email1" type="text" placeholder="Email address" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} onChange={(e) => setUsername(e.target.value)} />
 
                             <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
                                 Password
@@ -39,7 +66,9 @@ const LoginPage = () => {
                                 <div className="flex align-items-center">
                                 </div>
                             </div>
-                            <Button label="Sign In" className="w-full p-3 text-xl" onClick={() => router.push('/')}></Button>
+                            <Button label="Sign In" className="w-full p-3 text-xl" onClick={() => (
+                                login()
+                            )}></Button>
                         </div>
                     </div>
                 </div>
