@@ -1,14 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Toast} from 'primereact/toast';
-import PokemonService from '../../demo/service/PokemonService';
+import PokemonService from '../../data/service/api-calls/PokemonService';
 import {useRouter} from "next/router";
 import {ProgressBar} from "primereact/progressbar";
 import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 import {Dropdown} from "primereact/dropdown";
-import TypeService from "../../demo/service/TypeService";
-import StatService from "../../demo/service/StatService";
+import TypeService from "../../data/service/api-calls/TypeService";
+import StatService from "../../data/service/api-calls/StatService";
 import Abilities from "../abilities";
 import {InputNumber} from "primereact/inputnumber";
 

@@ -7,7 +7,7 @@ import {Button} from 'primereact/button';
 import {Toolbar} from 'primereact/toolbar';
 import {Dialog} from 'primereact/dialog';
 import {InputText} from 'primereact/inputtext';
-import AbilityService from '../../demo/service/AbilityService';
+import AbilityService from '../../data/service/api-calls/AbilityService';
 import {Paginator} from 'primereact/paginator';
 
 const Abilities = (props) => {
@@ -40,9 +40,9 @@ const Abilities = (props) => {
     }, []);
 
     const getAbilities = (filter) => {
-        abilityService.getAbilities(filter).then((data) => {
-            setTotalElements(data.items.totalElements);
-            setAbilities(data.items.content);
+        abilityService.get(filter).then((data) => {
+            setTotalElements(data.data.data.items.totalElements);
+            setAbilities(data.data.data.items.content);
             });
         }
     const openNew = () => {
@@ -66,14 +66,13 @@ const Abilities = (props) => {
 
     const saveAbility = () => {
         setSubmitted(true);
-      
         if (ability.name.trim()) {
           let _abilities = [...abilities];
           let _ability = { ...ability };
           if (ability.id) {
-            abilityService.updateAbility(_ability).then(data => {
+            abilityService.update(_ability).then(data => {
               const index = findIndexById(ability.id);
-              _abilities[index] = data;
+              _abilities[index] = data.data.data;
               setAbilities(_abilities);
               setAbilityDialog(false);
               setAbility(emptyAbility);
@@ -82,8 +81,8 @@ const Abilities = (props) => {
                 toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
                         });
           } else {
-            abilityService.createAbility(_ability).then(data => {
-              _abilities.push(data);
+            abilityService.create(_ability).then(data => {
+              _abilities.push(data.data.data);
               setAbilities(_abilities);
               setAbilityDialog(false);
               setAbility(emptyAbility);
@@ -107,7 +106,7 @@ const Abilities = (props) => {
     };
 
     const deleteAbility = () => {
-        abilityService.deleteAbility(ability).then(data => {
+        abilityService.delete(ability).then(data => {
         
             let _abilities = abilities.filter((val) => val.id !== ability.id);
             setAbilities(_abilities);
@@ -144,7 +143,7 @@ const Abilities = (props) => {
     const deleteSelectedAbilities = async () => {
         try {
           for (const element of selectedAbilities) {
-              await abilityService.deleteAbility(element);
+              await abilityService.delete(element);
           }
       
           let _abilities = abilities.filter((val) => !selectedAbilities.includes(val));

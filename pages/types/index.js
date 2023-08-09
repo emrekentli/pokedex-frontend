@@ -7,7 +7,7 @@ import {Button} from 'primereact/button';
 import {Toolbar} from 'primereact/toolbar';
 import {Dialog} from 'primereact/dialog';
 import {InputText} from 'primereact/inputtext';
-import TypeService from '../../demo/service/TypeService';
+import TypeService from '../../data/service/api-calls/TypeService';
 import {Paginator} from 'primereact/paginator';
 
 const Types = () => {

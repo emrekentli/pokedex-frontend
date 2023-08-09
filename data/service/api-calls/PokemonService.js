@@ -2,7 +2,6 @@ import axios from 'axios';
 
 export default class PokemonService {
 
-
     getPokemons(filter) {
         return axios.get('/api/pokemons/filter', { params: filter }).then((res) => res.data.data);
     }

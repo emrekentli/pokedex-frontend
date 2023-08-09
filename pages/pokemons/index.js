@@ -5,12 +5,12 @@ import {Button} from 'primereact/button';
 import {Toolbar} from 'primereact/toolbar';
 import {Dialog} from 'primereact/dialog';
 import {InputText} from 'primereact/inputtext';
-import PokemonService from '../../demo/service/PokemonService';
+import PokemonService from '../../data/service/api-calls/PokemonService';
 import {Paginator} from 'primereact/paginator';
 import {DataView, DataViewLayoutOptions} from 'primereact/dataview';
 import {Accordion, AccordionTab} from 'primereact/accordion';
 import {Dropdown} from 'primereact/dropdown';
-import TypeService from '../../demo/service/TypeService';
+import TypeService from '../../data/service/api-calls/TypeService';
 import {InputNumber} from "primereact/inputnumber";
 import {useRouter} from "next/router";
 
