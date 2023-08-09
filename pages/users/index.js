@@ -7,7 +7,7 @@ import {Button} from 'primereact/button';
 import {Toolbar} from 'primereact/toolbar';
 import {Dialog} from 'primereact/dialog';
 import {InputText} from 'primereact/inputtext';
-import UserService from '../../demo/service/UserService';
+import UserService from '../../data/service/api-calls/UserService';
 import {Paginator} from 'primereact/paginator';
 
 const Users = (props) => {

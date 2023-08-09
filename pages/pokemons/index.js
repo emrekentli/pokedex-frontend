@@ -13,7 +13,7 @@ import {Dropdown} from 'primereact/dropdown';
 import TypeService from '../../data/service/api-calls/TypeService';
 import {InputNumber} from "primereact/inputnumber";
 import {useRouter} from "next/router";
-import UserService from "../../demo/service/UserService";
+import UserService from "../../data/service/api-calls/UserService";
 
 const Pokemons = () => {
     let emptyPokemon = {
