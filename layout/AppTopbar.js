@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import {classNames} from 'primereact/utils';
-import React, {forwardRef, useContext, useImperativeHandle, useRef} from 'react';
+import React, {forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {LayoutContext} from './context/layoutcontext';
 import {TieredMenu} from "primereact/tieredmenu";
 import {AuthenticationStore} from "../data/service/store/AuthenticationStore";
 import {useRouter} from "next/router";
+import {isHaveAdminRole} from "../data/utills/role-validation/role-validations/AdminRoleValidation";
 
 const AppTopbar = forwardRef((props, ref) => {
     const { layoutConfig, layoutState, onMenuToggle, showProfileSidebar } = useContext(LayoutContext);
@@ -14,6 +15,12 @@ const AppTopbar = forwardRef((props, ref) => {
     const menu = useRef(null);
     const authenticationStore = new AuthenticationStore();
     const router = useRouter();
+    const [isAdmin , setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        setIsAdmin(isHaveAdminRole());
+    }, [])
+
 
     useImperativeHandle(ref, () => ({
         menubutton: menubuttonRef.current,
@@ -41,13 +48,16 @@ const AppTopbar = forwardRef((props, ref) => {
 
     return (
         <div className="layout-topbar">
-            <Link href="/" className="layout-topbar-logo">
-                <img src={`/layout/images/logo.png`}  height={'35px'} width={'true'} alt="logo" />
+            <Link href="/pokemons" >
+                <img src={`/layout/images/logo.png`}  height={'35px'} alt="logo" />
             </Link>
 
-            <button ref={menubuttonRef} type="button" className="p-link layout-menu-button layout-topbar-button" onClick={onMenuToggle}>
-                <i className="pi pi-bars" />
-            </button>
+            {
+                isAdmin &&
+                <button ref={menubuttonRef} type="button" className="p-link layout-menu-button layout-topbar-button" onClick={onMenuToggle}>
+                    <i className="pi pi-bars" />
+                </button>
+            }
 
             <button ref={topbarmenubuttonRef} type="button" className="p-link layout-topbar-menu-button layout-topbar-button" onClick={showProfileSidebar}>
                 <i className="pi pi-ellipsis-v" />
