@@ -14,6 +14,7 @@ import TypeService from '../../data/service/api-calls/TypeService';
 import {InputNumber} from "primereact/inputnumber";
 import {useRouter} from "next/router";
 import UserService from "../../data/service/api-calls/UserService";
+import {isHaveAdminRole} from "../../data/utills/role-validation/role-validations/AdminRoleValidation";
 
 const Pokemons = () => {
     let emptyPokemon = {
@@ -37,6 +38,11 @@ const Pokemons = () => {
     const toast = useRef(null);
     const [totalElements, setTotalElements] = useState(0);
     const router = useRouter();
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        setIsAdmin(isHaveAdminRole());
+    }, [])
 
 
     const [filter, setFilter] = useState({
@@ -324,7 +330,10 @@ typeService.getTypes({
                     <div className="flex align-items-center justify-content-between">
                         <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editPokemon(pokemon)}/>
                         <Button icon="pi pi-eye" className="p-button-rounded p-button-secondary" onClick={() => goToDetail(pokemon)}/>
-                        <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeletePokemon(pokemon)}/>
+                        {
+                            isAdmin &&
+                            <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeletePokemon(pokemon)} />
+                        }
                     </div>
                     <div className="flex align-items-center justify-content-around mt-2">
                         <Button label="Add to Catchlist" className="p-button-rounded " onClick={() => addToCatchlist(pokemon)}/>

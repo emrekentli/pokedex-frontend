@@ -11,11 +11,13 @@ import TypeService from "../../data/service/api-calls/TypeService";
 import StatService from "../../data/service/api-calls/StatService";
 import Abilities from "../abilities";
 import {InputNumber} from "primereact/inputnumber";
+import {isHaveAdminRole} from "../../data/utills/role-validation/role-validations/AdminRoleValidation";
 
 const Pokemons = () => {
 
     const [typeDialog, setTypeDialog] = useState(false);
     const [statDialog, setStatDialog] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(isHaveAdminRole());
 
     const [abilityDialog, setAbilityDialog] = useState(false);
     const [abilityComponentDialog, setAbilityComponentDialog] = useState(false);
@@ -283,14 +285,23 @@ const Pokemons = () => {
     return (
         <div className="grid card my-4">
             <div className="col-12 lg:col-6">
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-warning mr-2"
-                        onClick={() => setEditMode(!editMode)}/>
+                {
+
+                }
 
                 <div className="flex">
                     <Toast ref={toast}/>
+                    {
+                        isAdmin &&
+                        <Button icon="pi pi-pencil" className="p-button-rounded p-button-warning mr-2"
+                                onClick={() => setEditMode(!editMode)}/>
+                    }
+
                     <div className="pl-3 w-10"><img
                         src={pokemon?.imageUrl}
                         className="w-full" alt="product-overview"/></div>
+
+
                 </div>
             </div>
             <div className="col-12 lg:col-6 py-3 lg:pl-6">
