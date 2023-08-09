@@ -44,8 +44,8 @@ const Users = (props) => {
 
     const getUsers = (filter) => {
         userService.getUsers(filter).then((data) => {
-            setTotalElements(data.items.totalElements);
-            setUsers(data.items.content);
+            setTotalElements(data.data.data.items.totalElements);
+            setUsers(data.data.data.items.content);
             });
         }
     const openNew = () => {

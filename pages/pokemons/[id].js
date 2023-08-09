@@ -102,7 +102,7 @@ const Pokemons = () => {
             page: 0,
             size: 100,
         }).then(data => {
-            setTypes(data.items.content);
+            setTypes(data.data.data.items.content);
         });
     }
     const fetchStats = () => {
@@ -110,7 +110,7 @@ const Pokemons = () => {
             page: 0,
             size: 100,
         }).then(data => {
-            setStats(data.items.content);
+            setStats(data.data.data.items.content);
         });
     }
     const valueTemplate = (value) => {

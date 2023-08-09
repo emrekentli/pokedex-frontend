@@ -41,8 +41,8 @@ const Stats = () => {
 
     const getStats = (filter) => {
         statService.getStats(filter).then((data) => {
-            setTotalElements(data.items.totalElements);
-            setStats(data.items.content);
+            setTotalElements(data.data.data.items.totalElements);
+            setStats(data.data.data.items.content);
             });
         }
     const openNew = () => {

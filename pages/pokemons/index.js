@@ -76,7 +76,7 @@ typeService.getTypes({
             page: 0,
             size: 100,
     }).then(data => {
-            setTypes(data.items.content);
+            setTypes(data.data.data.items.content);
         });
     }
 
@@ -94,8 +94,8 @@ typeService.getTypes({
     }, [filter]);
     const fetchPokemons = () => {
         pokemonService.getPokemons(filter).then((data) => {
-            setTotalElements(data.items.totalElements);
-            setPokemons(data.items.content);
+            setTotalElements(data.data.data.items.totalElements);
+            setPokemons(data.data.data.items.content);
         });
     }
     const setSelectedTypeFilter = (e) => {
