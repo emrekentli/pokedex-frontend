@@ -186,11 +186,11 @@ typeService.getTypes({
     };
 
     const onInputChange = (e, name) => {
-        console.log(e,name);
-        const val = (e.target.value && e.target) || '';
-        let _pokemon = {...pokemon};
-        _pokemon[`${name}`] = val;
-        setPokemon(_pokemon);
+        const val =( e.target?.value || e.value)|| '';
+        setPokemon(prevPokemon => ({
+            ...prevPokemon,
+            [name]: val
+        }));
     };
 
     const leftToolbarTemplate = () => {
@@ -422,7 +422,7 @@ typeService.getTypes({
                         </div>
                         <div className="field">
                             <label htmlFor="weight">Weight</label>
-                            <InputNumber id="weight" value={pokemon.weight} onChange={(e) => onInputChange(e, 'weight')}/>
+                            <InputNumber id="weight" value={pokemon.weight} onChange={(e) => onInputChange( e,'weight')}/>
                         </div>
                         <div className="field">
                             <label htmlFor="height">Height</label>

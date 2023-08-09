@@ -8,15 +8,18 @@ import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 import {Dropdown} from "primereact/dropdown";
 import TypeService from "../../demo/service/TypeService";
+import StatService from "../../demo/service/StatService";
 import Abilities from "../abilities";
+import {InputNumber} from "primereact/inputnumber";
 
 const Pokemons = () => {
 
     const [typeDialog, setTypeDialog] = useState(false);
-    const [abilityDialog, setAbilityDialog] = useState(false);
-    const [abilityComponentDialog, setAbilityComponentDialog] = useState(false);
     const [statDialog, setStatDialog] = useState(false);
 
+    const [abilityDialog, setAbilityDialog] = useState(false);
+    const [abilityComponentDialog, setAbilityComponentDialog] = useState(false);
+    const [stats, setStats] = useState([]);
     const [pokemon, setPokemon] = useState({
         type: null,
         types: [],
@@ -31,7 +34,13 @@ const Pokemons = () => {
     const [ability, setAbility] = useState({
         name: ""
     });
-    const [stat, setStat] = useState(null);
+    const [stat, setStat] = useState({
+       statId: null,
+        stat:{
+            name: ""
+        },
+        statPoint:0
+    });
     const toast = useRef(null);
     const router = useRouter();
     const [id, setId] = useState(router.query.id);
@@ -54,7 +63,6 @@ const Pokemons = () => {
     const fetchPokemon = (id) => {
 
         pokemonService.getPokemon(id).then((data) => {
-            console.log(data)
             setPokemon(data);
         });
     }
@@ -86,8 +94,8 @@ const Pokemons = () => {
         );
     };
     const typeService = new TypeService();
+    const statService = new StatService();
     const [selectedType, setSelectedType] = useState(null);
-    const [selectedAbility, setSelectedAbility] = useState(null);
     const [selectedStat, setSelectedStat] = useState(null);
     const fetchTypes = () => {
         typeService.getTypes({
@@ -95,6 +103,14 @@ const Pokemons = () => {
             size: 100,
         }).then(data => {
             setTypes(data.items.content);
+        });
+    }
+    const fetchStats = () => {
+        statService.getStats({
+            page: 0,
+            size: 100,
+        }).then(data => {
+            setStats(data.items.content);
         });
     }
     const valueTemplate = (value) => {
@@ -107,6 +123,7 @@ const Pokemons = () => {
     const [types, setTypes] = useState([]);
 
     useEffect(() => {
+        fetchStats();
         fetchTypes();
     }, []);// eslint-disable-line react-hooks/exhaustive-deps
     const hideDeleteTypeDialog = () => {
@@ -163,7 +180,6 @@ const Pokemons = () => {
     const saveType = () => {
 
         if (selectedType) {
-
             pokemonService.addType(id, selectedType).then(data => {
                 console.log(data)
                 setTypeDialog(false);
@@ -185,11 +201,30 @@ const Pokemons = () => {
             });
         }
     };
+    const saveStat = () => {
+        console.log(stat, selectedStat)
+        if (stat && selectedStat) {
+            const request = {
+                statId: selectedStat.id,
+                statPoint: stat.statPoint
+            }
+            pokemonService.addStat(id, request).then(data => {
+                setStatDialog(false);
+                setPokemon(data);
+                toast.current.show({severity: 'success', summary: 'Successful', detail: 'Ability Added', life: 3000});
+            }).catch(error => {
+                toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
+            });
+        }
+    };
     const hideTypeDialog = () => {
         setTypeDialog(false);
     };
     const hideAbilityDialog = () => {
         setAbilityDialog(false);
+    };
+    const hideStatDialog = () => {
+        setStatDialog(false);
     };
     const hideAbilityComponentDialog = () => {
         setAbilityComponentDialog(false);
@@ -207,6 +242,13 @@ const Pokemons = () => {
     const openNewAbility = () => {
         setAbility(null);
         setAbilityDialog(true);
+    };
+    const onInputChange = (e, name) => {
+        const val =( e.target?.value || e.value)|| '';
+        setStat(prevStat => ({
+            ...prevStat,
+            [name]: val
+        }));
     };
     const openNewStat = () => {
         setStat(null);
@@ -228,6 +270,16 @@ const Pokemons = () => {
             <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveAbility}/>
         </>
     );
+    const statDialogFooter =  (
+        <>
+            <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideStatDialog}/>
+            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveStat}/>
+        </>
+    );
+    const setSelectedPokemonStat = (value) => {
+        setSelectedStat(value);
+        setStat({...stat, statId: value.id})
+    };
     return (
         <div className="grid card my-4">
             <div className="col-12 lg:col-6">
@@ -306,7 +358,7 @@ const Pokemons = () => {
                     <i className="pi pi-exclamation-triangle mr-3" style={{fontSize: '2rem'}}/>
                     {stat && (
                         <span>
-                                    Are you sure you want to delete <b>{stat.stat.name}</b>?
+                                    Are you sure you want to delete <b>{stat.stat?.name}</b>?
                                 </span>
                     )}
                 </div>
@@ -340,6 +392,21 @@ const Pokemons = () => {
                 <div className="field">
                     <label htmlFor="name">Name</label>
                     <InputText id="name" value={ability?.name} readOnly  onClick={setAbilityComponentDialog}/>
+                </div>
+            </Dialog>
+
+            <Dialog visible={statDialog} style={{width: '450px'}} header="Stat" modal className="p-fluid"
+                    footer={statDialogFooter} onHide={hideStatDialog}>
+                <div className="field">
+                    <label htmlFor="statPoint">Stat</label>
+                <Dropdown value={selectedStat} onChange={(e) => {
+                    setSelectedPokemonStat(e.value);
+                }} options={stats} optionLabel="name"
+                          placeholder="Select a Stat" className="w-full "/>
+                </div>
+                <div className="field">
+                    <label htmlFor="statPoint">Stat Point</label>
+                    <InputNumber id="statPoint" value={stat?.statPoint} onChange={(e) => onInputChange(e, 'statPoint')}/>
                 </div>
             </Dialog>
 

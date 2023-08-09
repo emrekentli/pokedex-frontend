@@ -37,6 +37,6 @@ export default class PokemonService {
         return axios.post(`/api/pokemons/${id}/abilities?abilityId=${ability.id}`, ).then((res) => res.data.data);
     }
     addStat(id,stat) {
-        return axios.post(`/api/pokemons/${id}/stats?statId=${stat.id}`, ).then((res) => res.data.data);
+        return axios.post(`/api/pokemons/${id}/stats`, stat ).then((res) => res.data.data);
     }
 }
