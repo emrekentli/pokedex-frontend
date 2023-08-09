@@ -1,5 +1,8 @@
 import axios from 'axios';
 import Router from 'next/router';
+import {AuthenticationStore} from "./data/service/store/AuthenticationStore";
+
+const authenticationStore = new AuthenticationStore();
 
 const BASE_URL = '/api/';
 
@@ -14,7 +17,8 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
     (config) => {
-        const token = window.localStorage.getItem('token');
+
+        const token = authenticationStore.getToken();
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -30,11 +34,10 @@ apiClient.interceptors.response.use(
     },
     (error) => {
         if (error.response && error.response.status === 403) {
-            window.localStorage.removeItem('token');
+            authenticationStore.setToken(null);
             Router.push('/auth/login');
         }
         return Promise.reject(error);
     }
 );
-
 export const axiosInstance = apiClient;

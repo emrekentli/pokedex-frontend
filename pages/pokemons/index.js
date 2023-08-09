@@ -76,6 +76,7 @@ typeService.getTypes({
             page: 0,
             size: 100,
     }).then(data => {
+            console.log(data);
             setTypes(data.data.data.items.content);
         });
     }
