@@ -73,7 +73,7 @@ const Stats = () => {
           if (stat.id) {
             statService.updateStat(_stat).then(data => {
               const index = findIndexById(stat.id);
-              _stats[index] = data;
+              _stats[index] = data.data.data;
               setStats(_stats);
               setStatDialog(false);
               setStat(emptyStat);
@@ -83,7 +83,7 @@ const Stats = () => {
                         });
           } else {
             statService.createStat(_stat).then(data => {
-              _stats.push(data);
+              _stats.push(data.data.data);
               setStats(_stats);
               setStatDialog(false);
               setStat(emptyStat);

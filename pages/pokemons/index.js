@@ -128,7 +128,7 @@ typeService.getTypes({
             if (pokemon.id) {
                 pokemonService.updatePokemon(_pokemon).then(data => {
                     const index = findIndexById(pokemon.id);
-                    _pokemons[index] = data;
+                    _pokemons[index] = data.data.data;
                     setPokemons(_pokemons);
                     setPokemonDialog(false);
                     setPokemon(emptyPokemon);
@@ -138,7 +138,7 @@ typeService.getTypes({
                 });
             } else {
                 pokemonService.createPokemon(_pokemon).then(data => {
-                    _pokemons.push(data);
+                    _pokemons.push(data.data.data);
                     setPokemons(_pokemons);
                     setPokemonDialog(false);
                     setPokemon(emptyPokemon);

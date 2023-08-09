@@ -73,7 +73,7 @@ const Types = () => {
           if (type.id) {
             typeService.updateType(_type).then(data => {
               const index = findIndexById(type.id);
-              _types[index] = data;
+              _types[index] = data.data.data;
               setTypes(_types);
               setTypeDialog(false);
               setType(emptyType);
@@ -83,7 +83,7 @@ const Types = () => {
                         });
           } else {
             typeService.createType(_type).then(data => {
-              _types.push(data);
+              _types.push(data.data.data);
               setTypes(_types);
               setTypeDialog(false);
               setType(emptyType);

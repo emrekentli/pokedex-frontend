@@ -76,7 +76,7 @@ const Users = (props) => {
           if (user.id) {
             userService.updateUser(_user).then(data => {
               const index = findIndexById(user.id);
-              _users[index] = data;
+              _users[index] = data.data.data;
               setUsers(_users);
               setUserDialog(false);
               setUser(emptyUser);
@@ -86,7 +86,7 @@ const Users = (props) => {
                         });
           } else {
             userService.createUser(_user).then(data => {
-              _users.push(data);
+              _users.push(data.data.data);
               setUsers(_users);
               setUserDialog(false);
               setUser(emptyUser);
