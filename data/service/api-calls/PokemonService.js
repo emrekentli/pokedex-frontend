@@ -27,6 +27,18 @@ export default class PokemonService {
         });
     }
 
+    async deletePokemonFromCatchlist(pokemon) {
+        return await BaseService({
+            method: 'DELETE',
+            url: `/users/catch/${pokemon.id}`,
+        });
+    }
+    async deletePokemonFromWishlist(pokemon) {
+        return await BaseService({
+            method: 'DELETE',
+            url: `/users/wish/${pokemon.id}`,
+        });
+    }
     async updatePokemon(pokemon) {
         return await BaseService({
             method: 'PUT',
@@ -82,6 +94,22 @@ export default class PokemonService {
             method: 'POST',
             url: `/pokemons/${id}/stats`,
             data: stat
+        });
+    }
+
+    async getCatchlist(filter) {
+        return await BaseService({
+            method: 'GET',
+            url: `/pokemons/catchlist`,
+            params: filter
+        });
+    }
+
+    async getWishlist(filter) {
+        return await BaseService({
+            method: 'GET',
+            url: `/pokemons/wishlist`,
+            params: filter
         });
     }
 }
