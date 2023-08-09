@@ -43,13 +43,13 @@ const Pokemons = () => {
         page: 0,
         size: 12,
         sort: 'created,asc',
-        name: "",
+        name: null,
         baseExperience: "",
-        height: "",
-        weight: "",
-        imageUrl: '',
+        height: null,
+        weight: null,
+        imageUrl: null,
         type: null,
-        ability: ""
+        ability: null
     });
     const clearFilters = () => {
         setFilter({
@@ -139,6 +139,7 @@ typeService.getTypes({
                 });
             } else {
                 pokemonService.createPokemon(_pokemon).then(data => {
+                    console.log(data);
                     _pokemons.push(data.data.data);
                     setPokemons(_pokemons);
                     setPokemonDialog(false);
@@ -242,7 +243,7 @@ typeService.getTypes({
                             <div className="flex align-items-center gap-3">
                                 <span className="flex align-items-center gap-2">
                                    <div className="flex justify-content-evenly w-full">
-                                {pokemon.types.map((type) => (
+                                {pokemon.types?.map((type) => (
                                     <div key={type.id} className="flex align-items-center gap-2  flex-column">
                                         <img  className="w-12  h-4rem mb-2 mt-2" src={getTypeIcon(type.name)} alt={type.name}/>
                                         {capitalizeFirstLetter(type.name)}
@@ -311,7 +312,7 @@ typeService.getTypes({
                         <div className="text-2xl font-bold">{capitalizeFirstLetter(pokemon.name)}</div>
 
                             <div className="flex justify-content-evenly w-full">
-                                {pokemon.types.map((type) => (
+                                {pokemon.types?.map((type) => (
                                     <div  key={type.id} className="flex align-items-center gap-2  flex-column">
                                         <img className="w-12  h-4rem mb-2 mt-2" src={getTypeIcon(type.name)} alt={type.name}/>
                                         {capitalizeFirstLetter(type.name)}
