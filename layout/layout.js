@@ -2,18 +2,26 @@ import Head from 'next/head';
 import {useRouter} from 'next/router';
 import {useEventListener, useMountEffect, useUnmountEffect} from 'primereact/hooks';
 import {classNames, DomHandler} from 'primereact/utils';
-import React, {useContext, useEffect, useRef} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import AppFooter from './AppFooter';
 import AppSidebar from './AppSidebar';
 import AppTopbar from './AppTopbar';
 import AppConfig from './AppConfig';
 import {LayoutContext} from './context/layoutcontext';
 import PrimeReact from 'primereact/api';
+import {isHaveAdminRole} from "../data/utills/role-validation/role-validations/AdminRoleValidation";
 
 const Layout = (props) => {
     const { layoutConfig, layoutState, setLayoutState } = useContext(LayoutContext);
     const topbarRef = useRef(null);
     const sidebarRef = useRef(null);
+    const [isAdmin , setIsAdmin] = useState(false);
+
+
+    useEffect(() => {
+        setIsAdmin(isHaveAdminRole());
+    }, [])
+
 
     const router = useRouter();
     const [bindMenuOutsideClickListener, unbindMenuOutsideClickListener] = useEventListener({
@@ -118,10 +126,13 @@ const Layout = (props) => {
 
             <div className={containerClass}>
                 <AppTopbar ref={topbarRef} />
-                <div ref={sidebarRef} className="layout-sidebar">
-                    <AppSidebar />
-                </div>
-                <div className="layout-main-container">
+                {
+                    isAdmin &&
+                    <div ref={sidebarRef} className="layout-sidebar">
+                        <AppSidebar />
+                    </div>
+                }
+                <div className={`layout-main-container  ${isAdmin ? "" : "ml-0"}` }>
                     <div className="layout-main">{props.children}</div>
                     <AppFooter />
                 </div>

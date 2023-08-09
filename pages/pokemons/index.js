@@ -337,8 +337,12 @@ typeService.getTypes({
                             </div>
                         <div className="text-xl">Abilities : {pokemon.abilities.map((ability) => capitalizeFirstLetter(ability.name)).join(" - ")}</div>
                     </div>
-                    <div className="flex align-items-center justify-content-between">
-                        <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editPokemon(pokemon)}/>
+                    <div className={`flex align-items-center ${ isAdmin ? " justify-content-between" : "justify-content-center" }` }>
+                        {
+                            isAdmin &&
+                            <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editPokemon(pokemon)}/>
+
+                        }
                         <Button icon="pi pi-eye" className="p-button-rounded p-button-secondary" onClick={() => goToDetail(pokemon)}/>
                         {
                             isAdmin &&
@@ -458,7 +462,12 @@ typeService.getTypes({
                             </form>
                         </AccordionTab>
                     </Accordion>
-                    <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
+
+                    {
+                        isAdmin &&
+                        <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
+                    }
+
 
                     <DataView dataKey="id" value={pokemons} itemTemplate={itemTemplate} layout={layout} header={header()}/>
                     <div className="card">
