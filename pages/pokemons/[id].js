@@ -63,7 +63,7 @@ const Pokemons = () => {
     const fetchPokemon = (id) => {
 
         pokemonService.getPokemon(id).then((data) => {
-            setPokemon(data);
+            setPokemon(data.data.data);
         });
     }
 
@@ -178,12 +178,10 @@ const Pokemons = () => {
         );
     };
     const saveType = () => {
-
         if (selectedType) {
             pokemonService.addType(id, selectedType).then(data => {
-                console.log(data)
                 setTypeDialog(false);
-                setPokemon(data);
+                setPokemon(data.data.data);
                 toast.current.show({severity: 'success', summary: 'Successful', detail: 'Type Added', life: 3000});
             }).catch(error => {
                 toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
@@ -299,7 +297,7 @@ const Pokemons = () => {
                     className="flex align-items-center text-xl font-medium text-900 mb-4">{capitalizeFirstLetter(pokemon?.name)}
                 </div>
                 <div className="flex align-items-center mb-5">
-                    {pokemon?.types.map((type) => (
+                    {pokemon?.types?.map((type) => (
                         <div key={type.id} className="flex align-items-center gap-2 flex-column mr-5">
                             <img className=" h-4rem mb-2 mt-2" src={getTypeIcon(type.name)} alt={type.name}/>
                             {capitalizeFirstLetter(type.name)}
@@ -310,7 +308,7 @@ const Pokemons = () => {
 
                 </div>
                 <div className="font-bold text-900 mb-3">Stats</div>
-                {pokemon?.stats.map((stat) => (
+                {pokemon?.stats?.map((stat) => (
                         <div key={stat.id} className="flex align-items-center mb-3">
                             <div className="w-2 mr-3">{capitalizeFirstLetter(stat.stat.name)}</div>
                             <div className="w-full">
@@ -323,7 +321,7 @@ const Pokemons = () => {
                     )
                 )}
                 <div className="font-bold text-900 mb-3">Abilities</div>
-                {pokemon?.abilities.map((ability) => (
+                {pokemon?.abilities?.map((ability) => (
                         <div key={ability.id} className="flex align-items-center mb-3">
                             <div className="w-3 mr-3">{capitalizeFirstLetter(ability.name)}</div>
                             {editMode && <Button icon="pi pi-times" className="p-button-icon  p-button-danger ml-3 p-1"

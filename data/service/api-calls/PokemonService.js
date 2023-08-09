@@ -77,7 +77,8 @@ export default class PokemonService {
     async addStat(id, stat) {
         return await BaseService({
             method: 'POST',
-            url: `/pokemons/${id}/stats?statId=${stat.id}`,
+            url: `/pokemons/${id}/stats`,
+            data: stat
         });
     }
 }
