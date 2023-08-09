@@ -285,17 +285,27 @@ typeService.getTypes({
     };
     const addToCatchlist = (pokemon) => {
         userService.addToCatchlist(pokemon).then(data => {
-            toast.current.show({severity: 'success', summary: 'Successful', detail: 'Pokemon Added To Catchlist', life: 3000});
-        }).catch(error => {
-            toast.current.show({severity: 'error', summary: 'Error', detail: 'Already exists in Catchlist', life: 3000});
+            if(data.data!=null){
+                toast.current.show({severity: 'success', summary: 'Successful', detail: 'Pokemon Added To Catchlist', life: 3000});
             }
-        );
+            else{
+                toast.current.show({severity: 'error', summary: 'Error', detail: 'Already exists in Catchlist', life: 3000});
+            }
+        }).catch(error => {
+                toast.current.show({severity: 'error', summary: 'Error', detail: 'Already exists in Catchlist', life: 3000});
+            }
+);
     };
     const addToWishlist = (pokemon) => {
         userService.addToWishlist(pokemon).then(data => {
-            toast.current.show({severity: 'success', summary: 'Successful', detail: 'Pokemon Added To Wishlist', life: 3000});
+            if(data.data!=null){
+                toast.current.show({severity: 'success', summary: 'Successful', detail: 'Pokemon Added To Wishlist', life: 3000});
+            }
+            else{
+                toast.current.show({severity: 'error', summary: 'Error', detail: 'Already exists in Wishlist', life: 3000});
+            }
         }).catch(error => {
-            toast.current.show({severity: 'error', summary: 'Error', detail: 'Already exists in Wishlist', life: 3000});
+                toast.current.show({severity: 'error', summary: 'Error', detail: 'Already exists in Wishlist', life: 3000});
             }
         );
     };
