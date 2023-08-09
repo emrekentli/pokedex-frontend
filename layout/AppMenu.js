@@ -13,6 +13,7 @@ const AppMenu = () => {
             icon: 'pi pi-fw pi-home',
             items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
                 { label: 'Pokemons', icon: 'pi pi-fw pi-home', to: '/pokemons' },
+                { label: 'Users', icon: 'pi pi-fw pi-home', to: '/users' },
             { label: 'Settings', icon: 'pi pi-fw pi-home', items: [
                 { label: 'Types', icon: 'pi pi-fw pi-home', to: '/types' }
                 ,  { label: 'Stats', icon: 'pi pi-fw pi-home', to: '/stats' }

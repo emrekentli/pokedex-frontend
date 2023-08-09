@@ -13,6 +13,7 @@ import {Dropdown} from 'primereact/dropdown';
 import TypeService from '../../demo/service/TypeService';
 import {InputNumber} from "primereact/inputnumber";
 import {useRouter} from "next/router";
+import UserService from "../../demo/service/UserService";
 
 const Pokemons = () => {
     let emptyPokemon = {
@@ -67,6 +68,7 @@ const Pokemons = () => {
     };
 
     const pokemonService = new PokemonService();
+    const userService = new UserService();
     const typeService = new TypeService();
     const [selectedType, setSelectedType] = useState(null);
     const fetchTypes = () => {
@@ -255,7 +257,12 @@ typeService.getTypes({
                             <Button icon="pi pi-pencil" className="p-button-rounded p-button-success" onClick={() => editPokemon(pokemon)}/>
                             <Button icon="pi pi-eye" className="p-button-rounded p-button-secondary" onClick={() => goToDetail(pokemon)}/>
                             <Button icon="pi pi-trash" className="p-button-rounded p-button-warning"  onClick={() => confirmDeletePokemon(pokemon)}/>
+                            <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
+                                <Button icon="pi pi-heart" className="p-button-rounded " onClick={() => addToCatchlist(pokemon)}/>
+                                <Button  icon="pi pi-bell" className="p-button-rounded p-button-info" onClick={() => addToWishlist(pokemon)}/>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -274,6 +281,22 @@ typeService.getTypes({
     const defaultImage = 'assets/icons/unknown-pokemon.png';
     const goToDetail = (pokemon) => {
         router.push(`/pokemons/${pokemon.id}`);
+    };
+    const addToCatchlist = (pokemon) => {
+        userService.addToCatchlist(pokemon).then(data => {
+            toast.current.show({severity: 'success', summary: 'Successful', detail: 'Pokemon Added To Catchlist', life: 3000});
+        }).catch(error => {
+            toast.current.show({severity: 'error', summary: 'Error', detail: 'Already exists in Catchlist', life: 3000});
+            }
+        );
+    };
+    const addToWishlist = (pokemon) => {
+        userService.addToWishlist(pokemon).then(data => {
+            toast.current.show({severity: 'success', summary: 'Successful', detail: 'Pokemon Added To Wishlist', life: 3000});
+        }).catch(error => {
+            toast.current.show({severity: 'error', summary: 'Error', detail: 'Already exists in Wishlist', life: 3000});
+            }
+        );
     };
     const gridItem = (pokemon) => {
         return (
@@ -300,6 +323,10 @@ typeService.getTypes({
                         <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editPokemon(pokemon)}/>
                         <Button icon="pi pi-eye" className="p-button-rounded p-button-secondary" onClick={() => goToDetail(pokemon)}/>
                         <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeletePokemon(pokemon)}/>
+                    </div>
+                    <div className="flex align-items-center justify-content-around mt-2">
+                        <Button label="Add to Catchlist" className="p-button-rounded " onClick={() => addToCatchlist(pokemon)}/>
+                        <Button label="Add to Wishlist" className="p-button-rounded p-button-info" onClick={() => addToWishlist(pokemon)}/>
                     </div>
 
                 </div>
@@ -342,10 +369,13 @@ typeService.getTypes({
     };
 
     return (
+
+
         <div className="grid crud-demo">
             <div className="col-12">
-
                 <div className="card">
+
+                    <Toast ref={toast}/>
                     <Accordion activeIndex={0} className="mb-4">
                         <AccordionTab header="Filter">
                             <form >
@@ -407,7 +437,6 @@ typeService.getTypes({
                             </form>
                         </AccordionTab>
                     </Accordion>
-                    <Toast ref={toast}/>
                     <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
 
                     <DataView dataKey="id" value={pokemons} itemTemplate={itemTemplate} layout={layout} header={header()}/>
