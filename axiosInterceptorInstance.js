@@ -12,13 +12,7 @@ const apiClient = axios.create({
     timeout: 10000,
 });
 
-const apiClientFile = axios.create({
-    baseURL: BASE_URL,
-    timeout: 10000,
-    headers: {
-        'Content-Type': 'multipart/form-data'
-    }
-});
+
 
 apiClient.interceptors.request.use(
     (config) => {
