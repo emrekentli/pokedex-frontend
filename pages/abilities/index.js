@@ -88,7 +88,7 @@ const Abilities = (props) => {
               setAbility(emptyAbility);
               toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Ability Created', life: 3000 });
             }).catch(error => {
-                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: error.getBody(), life: 3000 });
+                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Error!', life: 3000 });
             });
           }
         }

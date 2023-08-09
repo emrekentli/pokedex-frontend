@@ -211,9 +211,10 @@ const Pokemons = () => {
             pokemonService.addStat(id, request).then(data => {
                 setStatDialog(false);
                 setPokemon(data);
-                toast.current.show({severity: 'success', summary: 'Successful', detail: 'Ability Added', life: 3000});
+                toast.current.show({severity: 'success', summary: 'Successful', detail: 'Stat Added', life: 3000});
             }).catch(error => {
-                toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
+                console.log(error)
+                toast.current.show({severity: 'warn', summary: 'Warn Message', detail: "Error!", life: 3000});
             });
         }
     };
