@@ -9,11 +9,14 @@ export default class PokemonService {
         });
     }
 
-    async createPokemon(pokemon) {
+    async createPokemon(pokemon, file) {
         return await BaseService({
             method: 'POST',
             url: '/pokemons',
-            data: pokemon
+            data: pokemon,
+            header: {
+                'Content-Type': 'multipart/form-data',
+            }
         });
     }
 

@@ -15,6 +15,7 @@ import {InputNumber} from "primereact/inputnumber";
 import {useRouter} from "next/router";
 import UserService from "../../data/service/api-calls/UserService";
 import {isHaveAdminRole} from "../../data/utills/role-validation/role-validations/AdminRoleValidation";
+import {FileUpload} from "primereact/fileupload";
 
 const Pokemons = () => {
     let emptyPokemon = {
@@ -29,6 +30,9 @@ const Pokemons = () => {
         abilities: [],
         stats: []
     };
+    const imageFile = useRef(null);
+
+
     const [layout, setLayout] = useState('grid');
     const [pokemons, setPokemons] = useState(null);
     const [pokemonDialog, setPokemonDialog] = useState(false);
@@ -40,9 +44,22 @@ const Pokemons = () => {
     const router = useRouter();
     const [isAdmin, setIsAdmin] = useState(false);
 
+    const chooseOptions = {label: 'Choose', icon: 'pi pi-fw pi-plus'};
+    const uploadOptions = {label: 'Uplaod', icon: 'pi pi-upload', style: {display: 'none'}};
+
+
+    const customItemTemplate = (file, props) => {
+        console.log(file);
+        imageFile.current = file;
+    }
+
+
+
+
     useEffect(() => {
         setIsAdmin(isHaveAdminRole());
     }, [])
+
 
 
     const [filter, setFilter] = useState({
@@ -129,7 +146,8 @@ typeService.getTypes({
     const savePokemon = () => {
         setSubmitted(true);
 
-        if (pokemon.name.trim()) {
+        if (pokemon.name.trim(),
+            imageFile.current) {
             let _pokemons = [...pokemons];
             let _pokemon = {...pokemon};
             if (pokemon.id) {
@@ -144,7 +162,16 @@ typeService.getTypes({
                     toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
                 });
             } else {
-                pokemonService.createPokemon(_pokemon).then(data => {
+                const formData = new FormData();
+                formData.append("file", imageFile.current)
+
+
+                const blob = new Blob([JSON.stringify(_pokemon)], {
+                    type: 'application/json'
+                });
+                formData.append("data", blob);
+
+                pokemonService.createPokemon(formData).then(data => {
                     console.log(data);
                     _pokemons.push(data.data.data);
                     setPokemons(_pokemons);
@@ -491,6 +518,9 @@ typeService.getTypes({
                             <label htmlFor="baseExperience">Base Experience</label>
                             <InputNumber id="baseExperience" value={pokemon.baseExperience} onChange={(e) => onInputChange(e, 'baseExperience')}/>
                         </div>
+                        <FileUpload name="demo[]" url="./upload" chooseOptions={chooseOptions} uploadOptions={uploadOptions}   itemTemplate={customItemTemplate} />
+
+
                     </Dialog>
 
                     <Dialog visible={deletePokemonDialog} style={{width: '450px'}} header="Confirm" modal footer={deletePokemonDialogFooter} onHide={hideDeletePokemonDialog}>

@@ -10,8 +10,13 @@ const BASE_URL = '/api/';
 const apiClient = axios.create({
     baseURL: BASE_URL,
     timeout: 10000,
+});
+
+const apiClientFile = axios.create({
+    baseURL: BASE_URL,
+    timeout: 10000,
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'multipart/form-data'
     }
 });
 
@@ -28,6 +33,7 @@ apiClient.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
 apiClient.interceptors.response.use(
     (response) => {
         return response;
@@ -40,4 +46,5 @@ apiClient.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
 export const axiosInstance = apiClient;
