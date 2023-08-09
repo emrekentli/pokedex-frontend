@@ -1,18 +1,33 @@
 import axios from 'axios';
+import {BaseService} from "../../library/BaseService";
 
 export default class ProductService {
-   
 
-    getStats(filter) {
-        return axios.get('/api/stats/filter', { params: filter }).then((res) => res.data.data);
+    async getStats(filter) {
+        return await BaseService({
+            method: 'GET',
+            url: '/stats/filter',
+            params: filter
+        });
     }
-    createStat(stat) {
-        return axios.post('/api/stats', stat).then((res) => res.data.data);
+    async createStat(stat) {
+        return await BaseService({
+            method: 'POST',
+            url: '/stats',
+            data: stat
+        });
     }
-   deleteStat(stat) {
-        return axios.delete('/api/stats/'+ stat.id).then((res) => res.data.data);
+   async deleteStat(stat) {
+        return await BaseService({
+            method: 'DELETE',
+            url: '/stats/'+ stat.id,
+        });
     }
-    updateStat(stat) {
-        return axios.put('/api/stats/'+ stat.id, stat).then((res) => res.data.data);
+    async updateStat(stat) {
+        return await BaseService({
+            method: 'PUT',
+            url: '/stats/'+ stat.id,
+            data: stat
+        });
     }
 }

@@ -1,29 +1,58 @@
 import axios from 'axios';
+import {BaseService} from "../../library/BaseService";
 
 export default class UserService {
    
-    getUsers(filter) {
-        return axios.get('/api/users/filter', { params: filter }).then((res) => res.data.data);
+   async getUsers(filter) {
+       return await BaseService({
+           method: 'GET',
+              url: '/users/filter',
+           params: filter
+       });
     }
-    createUser(stat) {
-        return axios.post('/api/users', stat).then((res) => res.data.data);
+    async createUser(user) {
+
+        return await BaseService({
+            method: 'POST',
+            url: '/users',
+            data: user
+        });
     }
-   deleteUser(stat) {
-        return axios.delete('/api/users/'+ stat.id).then((res) => res.data.data);
+   async deleteUser(user) {
+       return await BaseService({
+              method: 'DELETE',
+              url: '/users/'+ user.id,
+         });
     }
-    updateUser(stat) {
-        return axios.put('/api/users/'+ stat.id, stat).then((res) => res.data.data);
+    async updateUser(user) {
+        return await BaseService({
+            method: 'PUT',
+            url: '/users/'+ user.id,
+            data: user
+        });
     }
-    addToCatchlist(pokemon){
-        return axios.post(`/api/users/catch/${pokemon.id}`).then((res) => res.data.data);
+    async addToCatchlist(pokemon){
+       return await BaseService({
+              method: 'POST',
+                url: '/users/catch/'+ pokemon.id,
+            });
     }
-    addToWishlist(pokemon){
-        return axios.post(`/api/users/wish/${pokemon.id}`).then((res) => res.data.data);
+    async addToWishlist(pokemon){
+        return await BaseService({
+            method: 'POST',
+            url: '/users/wish/'+ pokemon.id,
+        });
     }
-    deleteToCatchlist(pokemon){
-        return axios.delete(`/api/users/catch/${pokemon.id}`).then((res) => res.data.data);
+    async deleteToCatchlist(pokemon){
+       return await BaseService({
+                method: 'DELETE',
+                url: '/users/catch/'+ pokemon.id,
+            });
     }
-    deleteToWishlist(pokemon){
-        return axios.delete(`/api/users/wish/${pokemon.id}`).then((res) => res.data.data);
+    async deleteToWishlist(pokemon){
+        return await BaseService({
+            method: 'DELETE',
+            url: '/users/wish/'+ pokemon.id,
+        });
     }
 }

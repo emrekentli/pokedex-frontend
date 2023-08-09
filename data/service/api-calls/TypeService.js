@@ -1,18 +1,34 @@
 import {axiosInstance as axios} from "../../../axiosInterceptorInstance";
+import {BaseService} from "../../library/BaseService";
 
 export default class ProductService {
-   
 
-    getTypes(filter) {
-        return axios.get('types/filter', { params: filter }).then((res) => res.data.data);
+    async getTypes(filter) {
+        return await BaseService({
+            method: 'GET',
+            url: '/types/filter',
+            params: filter
+        });
     }
-    createType(type) {
-        return axios.post('types', type).then((res) => res.data.data);
+    async createType(type) {
+        return await BaseService({
+            method: 'POST',
+            url: '/types',
+            data: type
+        });
     }
-   deleteType(type) {
-        return axios.delete('types/'+ type.id).then((res) => res.data.data);
+    async deleteType(type) {
+        return await BaseService({
+            method: 'DELETE',
+            url: '/types/'+ type.id,
+        });
     }
-    updateType(type) {
-        return axios.put('types/'+ type.id, type).then((res) => res.data.data);
+
+    async updateType(type) {
+        return await BaseService({
+            method: 'PUT',
+            url: '/types/'+ type.id,
+            data: type
+        });
     }
 }
