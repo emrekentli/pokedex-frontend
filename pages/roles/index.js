@@ -79,7 +79,7 @@ const Roles = (props) => {
               setRole(emptyRole);
               toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 3000 });
             }).catch(error => {
-                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'An error occured!', life: 3000 });
                         });
           } else {
             roleService.createRole(_role).then(data => {
@@ -115,7 +115,7 @@ const Roles = (props) => {
             setRole(emptyRole);
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Role Deleted', life: 3000 });
         }).catch(error => {
-            toast.current.show({ severity: 'danger', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+            toast.current.show({ severity: 'danger', summary: 'Warn Message', detail: 'An error occured!', life: 3000 });
         }
         );
     };

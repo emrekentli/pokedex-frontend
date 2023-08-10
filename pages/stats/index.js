@@ -79,7 +79,7 @@ const Stats = () => {
               setStat(emptyStat);
               toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Stat Updated', life: 3000 });
             }).catch(error => {
-                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'An error occured!', life: 3000 });
                         });
           } else {
             statService.createStat(_stat).then(data => {
@@ -89,7 +89,7 @@ const Stats = () => {
               setStat(emptyStat);
               toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Stat Created', life: 3000 });
             }).catch(error => {
-                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'An error occured!', life: 3000 });
             });
           }
         }
@@ -115,7 +115,7 @@ const Stats = () => {
             setStat(emptyStat);
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Stat Deleted', life: 3000 });
         }).catch(error => {
-            toast.current.show({ severity: 'danger', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+            toast.current.show({ severity: 'danger', summary: 'Warn Message', detail: 'An error occured!', life: 3000 });
         }
         );
     };

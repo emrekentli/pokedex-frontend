@@ -91,7 +91,7 @@ const Pokemons = () => {
             setDeleteTypeDialog(false);
             toast.current.show({severity: 'success', summary: 'Successful', detail: 'Type Deleted', life: 3000});
         }).catch(error => {
-                toast.current.show({severity: 'danger', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
+                toast.current.show({severity: 'danger', summary: 'Warn Message', detail: 'An error occured!', life: 3000});
             }
         );
     };
@@ -150,7 +150,7 @@ const Pokemons = () => {
             setDeleteStatDialog(false);
             toast.current.show({severity: 'success', summary: 'Successful', detail: 'Stat Deleted', life: 3000});
         }).catch(error => {
-                toast.current.show({severity: 'danger', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
+                toast.current.show({severity: 'danger', summary: 'Warn Message', detail: 'An error occured!', life: 3000});
             }
         );
     };
@@ -176,7 +176,7 @@ const Pokemons = () => {
             setDeleteAbilityDialog(false);
             toast.current.show({severity: 'success', summary: 'Successful', detail: 'Ability Deleted', life: 3000});
         }).catch(error => {
-                toast.current.show({severity: 'danger', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
+                toast.current.show({severity: 'danger', summary: 'Warn Message', detail: 'An error occured!', life: 3000});
             }
         );
     };
@@ -187,7 +187,7 @@ const Pokemons = () => {
                 setPokemon(data.data.data);
                 toast.current.show({severity: 'success', summary: 'Successful', detail: 'Type Added', life: 3000});
             }).catch(error => {
-                toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
+                toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'An error occured!', life: 3000});
             });
         }
     };
@@ -198,7 +198,7 @@ const Pokemons = () => {
                 setPokemon(data.data.data);
                 toast.current.show({severity: 'success', summary: 'Successful', detail: 'Ability Added', life: 3000});
             }).catch(error => {
-                toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
+                toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'An error occured!', life: 3000});
             });
         }
     };

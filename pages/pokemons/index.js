@@ -148,7 +148,7 @@ typeService.getTypes({
                     setPokemon(emptyPokemon);
                     toast.current.show({severity: 'success', summary: 'Successful', detail: 'Pokemon Updated', life: 3000});
                 }).catch(error => {
-                    toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
+                    toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'An error occured!', life: 3000});
                 });
             } else {
                 pokemonService.createPokemon(_pokemon).then(data => {
@@ -158,7 +158,7 @@ typeService.getTypes({
                     setPokemon(emptyPokemon);
                     toast.current.show({severity: 'success', summary: 'Successful', detail: 'Pokemon Created', life: 3000});
                 }).catch(error => {
-                    toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
+                    toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'An error occured!', life: 3000});
                 });
             }
         }
@@ -183,7 +183,7 @@ typeService.getTypes({
             setPokemon(emptyPokemon);
             toast.current.show({severity: 'success', summary: 'Successful', detail: 'Pokemon Deleted', life: 3000});
         }).catch(error => {
-                toast.current.show({severity: 'danger', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
+                toast.current.show({severity: 'danger', summary: 'Warn Message', detail: 'An error occured!', life: 3000});
             }
         );
     };

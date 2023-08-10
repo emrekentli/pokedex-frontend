@@ -78,7 +78,7 @@ const Abilities = (props) => {
               setAbility(emptyAbility);
               toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Ability Updated', life: 3000 });
             }).catch(error => {
-                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'An error occured!', life: 3000 });
                         });
           } else {
             abilityService.create(_ability).then(data => {
@@ -114,7 +114,7 @@ const Abilities = (props) => {
             setAbility(emptyAbility);
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Ability Deleted', life: 3000 });
         }).catch(error => {
-            toast.current.show({ severity: 'danger', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+            toast.current.show({ severity: 'danger', summary: 'Warn Message', detail: 'An error occured!', life: 3000 });
         }
         );
     };

@@ -129,7 +129,7 @@ const Users = (props) => {
               setUser(emptyUser);
               toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
             }).catch(error => {
-                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+                toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'An error occured!', life: 3000 });
                         });
           } else {
             userService.createUser(_user).then(data => {
@@ -161,7 +161,7 @@ const Users = (props) => {
                     setUser(emptyUser);
                     toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
                 }).catch(error => {
-                    toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+                    toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'An error occured!', life: 3000 });
                 });
             }
         }
@@ -183,7 +183,7 @@ const Users = (props) => {
                     setUser(emptyUser);
                     toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
                 }).catch(error => {
-                    toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+                    toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'An error occured!', life: 3000 });
                 });
             }
         }
@@ -207,7 +207,7 @@ const Users = (props) => {
             setUser(emptyUser);
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
         }).catch(error => {
-            toast.current.show({ severity: 'danger', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+            toast.current.show({ severity: 'danger', summary: 'Warn Message', detail: 'An error occured!', life: 3000 });
         }
         );
     };
