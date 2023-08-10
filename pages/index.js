@@ -4,7 +4,7 @@ import {Menu} from 'primereact/menu';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {LayoutContext} from '../layout/context/layoutcontext';
 import Link from 'next/link';
-
+import {useRouter} from "next/router";
 const lineData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
@@ -96,8 +96,9 @@ const Dashboard = () => {
 
         setLineOptions(lineOptions);
     };
-
+    const router = useRouter();
     useEffect(() => {
+        router.push(`/auth/login`);
     }, []);
 
     useEffect(() => {
