@@ -20,7 +20,7 @@ const LoginPage = () => {
     useEffect(() => {
             if (authenticationStore.getToken()) {
                 console.log("token: " + authenticationStore.getToken());
-                router.push("/");
+                router.push("/pokemons");
             }
     }, []);
 
@@ -34,7 +34,7 @@ const LoginPage = () => {
             }
             authenticationStore.setToken(res.data.data.token);
             authenticationStore.setRoles(res.data.data.roles);
-            router.push("/");
+            router.push("/pokemons");
         })
     }
 
@@ -53,9 +53,9 @@ const LoginPage = () => {
 
                         <div>
                             <label htmlFor="email1" className="block text-900 text-xl font-medium mb-2">
-                                Email
+                                Username
                             </label>
-                            <InputText inputid="email1" type="text" placeholder="Email address" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} onChange={(e) => setUsername(e.target.value)} />
+                            <InputText inputid="email1" type="text" placeholder="Username" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} onChange={(e) => setUsername(e.target.value)} />
 
                             <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
                                 Password

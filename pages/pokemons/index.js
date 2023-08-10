@@ -289,10 +289,12 @@ typeService.getTypes({
                             <div className="text-xl">Abilities : {pokemon.abilities.map((ability) => capitalizeFirstLetter(ability.name)).join(" - ")}</div>
                         </div>
                         <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                            <Button icon="pi pi-pencil" className="p-button-rounded p-button-success" onClick={() => editPokemon(pokemon)}/>
-                            <Button icon="pi pi-eye" className="p-button-rounded p-button-secondary" onClick={() => goToDetail(pokemon)}/>
-                            <Button icon="pi pi-trash" className="p-button-rounded p-button-warning"  onClick={() => confirmDeletePokemon(pokemon)}/>
-                            <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
+                            {isAdmin && <Button icon="pi pi-pencil" className="p-button-rounded p-button-success"
+                                     onClick={() => editPokemon(pokemon)}/>
+                            }                            <Button icon="pi pi-eye" className="p-button-rounded p-button-secondary" onClick={() => goToDetail(pokemon)}/>
+                            { isAdmin && <Button icon="pi pi-trash" className="p-button-rounded p-button-warning"
+                                     onClick={() => confirmDeletePokemon(pokemon)}/>
+                            }                             <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
                                 <Button icon="pi pi-heart" className="p-button-rounded " onClick={() => addToCatchlist(pokemon)}/>
                                 <Button  icon="pi pi-bell" className="p-button-rounded p-button-info" onClick={() => addToWishlist(pokemon)}/>
                             </div>
