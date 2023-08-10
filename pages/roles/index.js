@@ -273,7 +273,7 @@ const Roles = (props) => {
                     >
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
                         <Column field="name" header="Name" sortable body={nameBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
-                        <Column field="email" header="Email" sortable body={displayNameBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                        <Column field="displayName" header="Display Name" sortable body={displayNameBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
 
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
