@@ -41,8 +41,8 @@ const Types = () => {
 
     const getTypes = (filter) => {
         typeService.getTypes(filter).then((data) => {
-            setTotalElements(data.data.data.items.totalElements);
-            setTypes(data.data.data.items.content);
+            setTotalElements(data.data?.data.items.totalElements);
+            setTypes(data.data?.data.items.content);
             });
         }
     const openNew = () => {

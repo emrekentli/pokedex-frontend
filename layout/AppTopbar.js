@@ -6,6 +6,7 @@ import {TieredMenu} from "primereact/tieredmenu";
 import {AuthenticationStore} from "../data/service/store/AuthenticationStore";
 import {useRouter} from "next/router";
 import {isHaveAdminRole} from "../data/utills/role-validation/role-validations/AdminRoleValidation";
+import LoginService from "../data/service/api-calls/LoginService";
 
 const AppTopbar = forwardRef((props, ref) => {
     const { layoutConfig, layoutState, onMenuToggle, showProfileSidebar } = useContext(LayoutContext);
@@ -15,6 +16,7 @@ const AppTopbar = forwardRef((props, ref) => {
     const menu = useRef(null);
     const authenticationStore = new AuthenticationStore();
     const router = useRouter();
+    const loginService = new LoginService();
     const [isAdmin , setIsAdmin] = useState(false);
 
     useEffect(() => {
@@ -39,6 +41,7 @@ const AppTopbar = forwardRef((props, ref) => {
             label: 'Quit',
             icon: 'pi pi-fw pi-power-off',
             command: () => {
+                loginService.logout();
                 authenticationStore.setToken(null);
                 authenticationStore.setRoles(null);
                 router.push("/auth/login");

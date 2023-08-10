@@ -41,8 +41,8 @@ const Abilities = (props) => {
 
     const getAbilities = (filter) => {
         abilityService.get(filter).then((data) => {
-            setTotalElements(data.data.data.items.totalElements);
-            setAbilities(data.data.data.items.content);
+            setTotalElements(data.data?.data.items.totalElements);
+            setAbilities(data.data?.data.items.content);
             });
         }
     const openNew = () => {

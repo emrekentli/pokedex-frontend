@@ -15,7 +15,6 @@ import {InputNumber} from "primereact/inputnumber";
 import {useRouter} from "next/router";
 import UserService from "../../data/service/api-calls/UserService";
 import {isHaveAdminRole} from "../../data/utills/role-validation/role-validations/AdminRoleValidation";
-import {FileUpload} from "primereact/fileupload";
 
 const Pokemons = () => {
     let emptyPokemon = {
@@ -43,15 +42,6 @@ const Pokemons = () => {
     const [totalElements, setTotalElements] = useState(0);
     const router = useRouter();
     const [isAdmin, setIsAdmin] = useState(false);
-
-    const chooseOptions = {label: 'Choose', icon: 'pi pi-fw pi-plus'};
-    const uploadOptions = {label: 'Uplaod', icon: 'pi pi-upload', style: {display: 'none'}};
-
-
-    const customItemTemplate = (file, props) => {
-        console.log(file);
-        imageFile.current = file;
-    }
 
 
 
@@ -100,7 +90,7 @@ typeService.getTypes({
             size: 100,
     }).then(data => {
             console.log(data);
-            setTypes(data.data.data.items.content);
+            setTypes(data.data?.data.items.content);
         });
     }
 
@@ -118,8 +108,8 @@ typeService.getTypes({
     }, [filter]);
     const fetchPokemons = () => {
         pokemonService.getPokemons(filter).then((data) => {
-            setTotalElements(data.data.data.items.totalElements);
-            setPokemons(data.data.data.items.content);
+            setTotalElements(data.data?.data.items.totalElements);
+            setPokemons(data.data?.data.items.content);
         });
     }
     const setSelectedTypeFilter = (e) => {
@@ -146,8 +136,7 @@ typeService.getTypes({
     const savePokemon = () => {
         setSubmitted(true);
 
-        if (pokemon.name.trim(),
-            imageFile.current) {
+        if (pokemon.name.trim()) {
             let _pokemons = [...pokemons];
             let _pokemon = {...pokemon};
             if (pokemon.id) {
@@ -162,17 +151,7 @@ typeService.getTypes({
                     toast.current.show({severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000});
                 });
             } else {
-                const formData = new FormData();
-                formData.append("file", imageFile.current)
-
-
-                const blob = new Blob([JSON.stringify(_pokemon)], {
-                    type: 'application/json'
-                });
-                formData.append("data", blob);
-
-                pokemonService.createPokemon(formData).then(data => {
-                    console.log(data);
+                pokemonService.createPokemon(_pokemon).then(data => {
                     _pokemons.push(data.data.data);
                     setPokemons(_pokemons);
                     setPokemonDialog(false);
@@ -520,8 +499,10 @@ typeService.getTypes({
                             <label htmlFor="baseExperience">Base Experience</label>
                             <InputNumber id="baseExperience" value={pokemon.baseExperience} onChange={(e) => onInputChange(e, 'baseExperience')}/>
                         </div>
-                        <FileUpload name="demo[]" url="./upload" chooseOptions={chooseOptions} uploadOptions={uploadOptions}   itemTemplate={customItemTemplate} />
-
+                        <div className="field">
+                            <label htmlFor="name">Image Url</label>
+                            <InputText id="name" value={pokemon.imageUrl} onChange={(e) => onInputChange(e, 'imageUrl')} required autoFocus className={classNames({'p-invalid': submitted && !pokemon.imageUrl})}/>
+                        </div>
 
                     </Dialog>
 

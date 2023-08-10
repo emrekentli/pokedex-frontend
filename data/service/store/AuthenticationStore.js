@@ -1,4 +1,4 @@
-import { BaseStorageService} from "../../library/BaseStorageService";
+import {BaseStorageService} from "../../library/BaseStorageService";
 
 const ITEM_KEY = 'token';
 const ROLES_KEY = 'roles';

@@ -16,7 +16,8 @@ const AppMenu = () => {
             { label: 'Settings', icon: 'pi pi-fw pi-cog', items: [
                 { label: 'Types', icon: 'pi pi-fw pi-times', to: '/types' }
                 ,  { label: 'Stats', icon: 'pi pi-fw pi-times', to: '/stats' }
-                ,  { label: 'Abilities', icon: 'pi pi-fw pi-times', to: '/abilities' }
+                    ,  { label: 'Abilities', icon: 'pi pi-fw pi-times', to: '/abilities' }
+                    ,  { label: 'Roles', icon: 'pi pi-fw pi-times', to: '/roles' }
             ] }],
         }
     ];

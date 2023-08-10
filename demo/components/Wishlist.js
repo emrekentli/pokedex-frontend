@@ -1,12 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {classNames} from 'primereact/utils';
 import {Toast} from 'primereact/toast';
 import {Button} from 'primereact/button';
-import {Toolbar} from 'primereact/toolbar';
 import {Dialog} from 'primereact/dialog';
 import {InputText} from 'primereact/inputtext';
 import PokemonService from '../../data/service/api-calls/PokemonService';
-import {Paginator} from 'primereact/paginator';
 import {DataView, DataViewLayoutOptions} from 'primereact/dataview';
 import {Accordion, AccordionTab} from 'primereact/accordion';
 import {Dropdown} from 'primereact/dropdown';
@@ -82,7 +79,7 @@ typeService.getTypes({
             size: 100,
     }).then(data => {
             console.log(data);
-            setTypes(data.data.data.items.content);
+            setTypes(data.data?.data.items.content);
         });
     }
 

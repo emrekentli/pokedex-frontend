@@ -1,4 +1,4 @@
-import { isUserHavePermission} from "../RoleValidationBase";
+import {isUserHavePermission} from "../RoleValidationBase";
 
 export const isHaveAdminRole = () => {
     const requiredRoles = ['ROLE_ADMIN'];

@@ -2,31 +2,32 @@ import {BaseService} from "../../library/BaseService";
 
 export default class ProductService {
 
-    async getStats(filter) {
+    async getRoles(filter) {
         return await BaseService({
             method: 'GET',
-            url: '/stats/filter',
+            url: '/roles/filter',
             params: filter
         });
     }
-    async createStat(stat) {
+    async createRole(type) {
         return await BaseService({
             method: 'POST',
-            url: '/stats',
-            data: stat
+            url: '/roles',
+            data: type
         });
     }
-   async deleteStat(stat) {
+    async deleteRole(type) {
         return await BaseService({
             method: 'DELETE',
-            url: '/stats/'+ stat.id,
+            url: '/roles/'+ type.id,
         });
     }
-    async updateStat(stat) {
+
+    async updateRole(type) {
         return await BaseService({
             method: 'PUT',
-            url: '/stats/'+ stat.id,
-            data: stat
+            url: '/roles/'+ type.id,
+            data: type
         });
     }
 }

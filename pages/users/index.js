@@ -9,8 +9,12 @@ import {Dialog} from 'primereact/dialog';
 import {InputText} from 'primereact/inputtext';
 import UserService from '../../data/service/api-calls/UserService';
 import {Paginator} from 'primereact/paginator';
+import RoleService from '../../data/service/api-calls/RoleService';
+import {Dropdown} from "primereact/dropdown";
+import {Accordion, AccordionTab} from "primereact/accordion";
 
 const Users = (props) => {
+
     let emptyUser = {
         id: null,
         fullName: '',
@@ -19,9 +23,11 @@ const Users = (props) => {
         userName: '',
         created:null
     };
-
+    const [isDelete, setIsDelete] = useState(false);
     const [users, setUsers] = useState(null);
+    const [roles, setRoles] = useState(null);
     const [userDialog, setUserDialog] = useState(false);
+    const [roleDialog, setRoleDialog] = useState(false);
     const [deleteUserDialog, setDeleteUserDialog] = useState(false);
     const [deleteUsersDialog, setDeleteUsersDialog] = useState(false);
     const [user, setUser] = useState(emptyUser);
@@ -30,22 +36,50 @@ const Users = (props) => {
     const toast = useRef(null);
     const dt = useRef(null);
     const [totalElements, setTotalElements] = useState(0);
-    const filter = {
+    const [role, setRole] = useState(null);
+    const roleService = new RoleService();
+    const [filter, setFilter] = useState({
         page: 0,
         size: 20,
-        sort: 'created,desc',
-        name: null
+        sort: 'created,asc',
+        userName: null,
+        fullName: null,
+        email: null,
+        phoneNumber: null
+    });
+    const clearFilters = () => {
+        setFilter({
+            page: 0,
+            size: 20,
+            sort: 'created,asc',
+            userName: null,
+            fullName: null,
+            email: null,
+            phoneNumber: null
+        });
     };
     const userService = new UserService();
     useEffect(() => {
-        getUsers(filter);
+        getUsers();
+        // eslint-disable-next-line
+    }, [filter]);
+    useEffect(() => {
+        const getRoles = () => {
+            roleService.getRoles({
+                page: 0,
+                size: 100
+            }).then((data) => {
+                console.log(data.data?.data.items.content)
+                setRoles(data.data?.data.items.content);
+            });
+        };
+        getRoles();
         // eslint-disable-next-line
     }, []);
-
-    const getUsers = (filter) => {
+    const getUsers = () => {
         userService.getUsers(filter).then((data) => {
-            setTotalElements(data.data.data.items.totalElements);
-            setUsers(data.data.data.items.content);
+            setTotalElements(data.data?.data.items.totalElements);
+            setUsers(data.data?.data.items.content);
             });
         }
     const openNew = () => {
@@ -54,11 +88,24 @@ const Users = (props) => {
         setUserDialog(true);
     };
 
+    const openRoleDialog = (user) => {
+        setUser(user);
+        setIsDelete(false);
+        setRoleDialog(true);
+    };
+
+    const openDeleteRoleDialog = (user) => {
+        setUser(user);
+        setIsDelete(true);
+        setRoleDialog(true);
+    };
     const hideDialog = () => {
         setSubmitted(false);
         setUserDialog(false);
     };
-
+    const hideRoleDialog = () => {
+        setRoleDialog(false);
+    };
     const hideDeleteUserDialog = () => {
         setDeleteUserDialog(false);
     };
@@ -69,7 +116,7 @@ const Users = (props) => {
 
     const saveUser = () => {
         setSubmitted(true);
-      
+
         if (user.fullName.trim() && user.email.trim() && user.phoneNumber.trim() && user.userName.trim()) {
           let _users = [...users];
           let _user = { ...user };
@@ -97,8 +144,50 @@ const Users = (props) => {
           }
         }
       };
-      
 
+    const saveUserRole  = () => {
+        setSubmitted(true);
+        console.log(role);
+        console.log(user);
+        if (role) {
+            let _users = [...users];
+            let _user = { ...user };
+            if (user.id) {
+                userService.addRoleToUser(_user,role).then(data => {
+                    const index = findIndexById(user.id);
+                    _users[index] = data.data.data;
+                    setUsers(_users);
+                    setRoleDialog(false);
+                    setUser(emptyUser);
+                    toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
+                }).catch(error => {
+                    toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+                });
+            }
+        }
+    };
+
+    const deleteUserRole  = () => {
+        setSubmitted(true);
+        console.log(role);
+        console.log(user);
+        if (role) {
+            let _users = [...users];
+            let _user = { ...user };
+            if (user.id) {
+                userService.deleteRoleToUser(_user,role).then(data => {
+                    const index = findIndexById(user.id);
+                    _users[index] = data.data.data;
+                    setUsers(_users);
+                    setRoleDialog(false);
+                    setUser(emptyUser);
+                    toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
+                }).catch(error => {
+                    toast.current.show({ severity: 'warn', summary: 'Warn Message', detail: 'Message Detail', life: 3000 });
+                });
+            }
+        }
+    };
     const editUser = (user) => {
         setUser({ ...user });
         setUserDialog(true);
@@ -111,7 +200,7 @@ const Users = (props) => {
 
     const deleteUser = () => {
         userService.deleteUser(user).then(data => {
-        
+
             let _users = users.filter((val) => val.id !== user.id);
             setUsers(_users);
             setDeleteUserDialog(false);
@@ -139,7 +228,7 @@ const Users = (props) => {
         return index;
     };
 
-   
+
     const confirmDeleteSelected = () => {
         setDeleteUsersDialog(true);
     };
@@ -149,12 +238,12 @@ const Users = (props) => {
           for (const element of selectedUsers) {
               await userService.deleteUser(element);
           }
-      
+
           let _users = users.filter((val) => !selectedUsers.includes(val));
           setUsers(_users);
           setDeleteUsersDialog(false);
           setSelectedUsers(null);
-      
+
           toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000 });
         } catch (error) {
           console.error('Delete error:', error);
@@ -215,6 +304,14 @@ const Users = (props) => {
             </>
         );
     };
+    const rolesBodyTemplate = (rowData) => {
+        return (
+            <>
+                <span className="p-column-title">Roles</span>
+                {rowData.roles?.map((role) => role.name).join(', ')}
+            </>
+        );
+    };
 
 
 
@@ -222,10 +319,14 @@ const Users = (props) => {
         return (
             <div className="actions">
                 { !props.isSelect && <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2"
-                         onClick={() => editUser(rowData)}/>}
-                { !props.isSelect && <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteUser(rowData)} /> }
-                { props.isSelect && <Button label="Select" className="p-button-rounded p-button-success mt-2"
-                         onClick={() => props.setUser(rowData)}/>}
+                                             onClick={() => editUser(rowData)}/>}
+                { !props.isSelect && <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mr-2" onClick={() => confirmDeleteUser(rowData)} /> }
+                { !props.isSelect && <Button icon="pi pi-plus" className="p-button-rounded p-button-warning mr-2" onClick={() => openRoleDialog(rowData)} /> }
+                { !props.isSelect && <Button icon="pi pi-times" className="p-button-rounded p-button-dagner mr-2" onClick={() => openDeleteRoleDialog(rowData)} /> }
+
+                { props.isSelect && <Button label="Select" className="p-button-rounded p-button-success mr-2"
+                                            onClick={() => props.setUser(rowData)}/>}
+
             </div>
         );
     };
@@ -244,6 +345,18 @@ const Users = (props) => {
         <>
             <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
             <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveUser} />
+        </>
+    );
+    const roleDialogFooter = (
+        <>
+            <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideRoleDialog} />
+            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveUserRole} />
+        </>
+    );
+    const deleteRoleDialogFooter = (
+        <>
+            <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideRoleDialog} />
+            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={deleteUserRole} />
         </>
     );
     const deleteUserDialogFooter = (
@@ -270,12 +383,75 @@ const Users = (props) => {
         };
         getUsers(updatedFilter);
     };
-
+    const handleUsernameChange = (e) => {
+        const { value } = e.target;
+        setFilter({ ...filter, userName: value });
+    };
+    const handleEmailChange = (e) => {
+        const { value } = e.target;
+        setFilter({ ...filter, email: value });
+    };
+    const handlePhoneNumberChange = (e) => {
+        const { value } = e.target;
+        setFilter({ ...filter, phoneNumber: value });
+    };
+    const handleFullNameChange = (e) => {
+        const { value } = e.target;
+        setFilter({ ...filter, fullName: value });
+    };
     return (
         <div className="grid crud-demo">
             <div className="col-12">
                 <div className="card">
                     <Toast ref={toast} />
+                    <Accordion activeIndex={0} className="mb-4">
+                        <AccordionTab header="Filter">
+                            <form >
+                                <div style={{ minHeight: '40px', gap: '20px' }} className="flex mb-3 ">
+                                    <InputText
+                                        value={filter.userName}
+                                        placeholder="userName"
+                                        onChange={handleUsernameChange}
+                                        style={{width:'100%'}}
+                                    />
+                                    <InputText
+                                        value={filter.email}
+                                        placeholder="Email"
+                                        onChange={handleEmailChange}
+                                        style={{width:'100%'}}
+                                    />
+                                    <InputText
+                                        value={filter.height}
+                                        placeholder="phoneNumber"
+                                        onChange={handlePhoneNumberChange}
+                                        style={{width:'100%'}}
+                                    />
+                                    <InputText
+                                        value={filter.fullName}
+                                        placeholder="fullName"
+                                        onChange={handleFullNameChange}
+                                        style={{width:'100%'}}
+                                    />
+                                </div>
+                                <div style={{ minHeight: '40px', gap: '20px' }} className="input-group-filter mb-3">
+                                    <div className='flex mb-2'>
+                                        <Button
+                                            label="Clear"
+                                            icon="pi pi-times"
+                                            className="p-button-danger w-full mr-2"
+                                            onClick={clearFilters}
+                                        />
+                                        <Button
+                                            label="Filter"
+                                            icon="pi pi-times"
+                                            onClick={getUsers}
+                                            className="p-button-secondary w-full mr-2"
+                                        />
+                                    </div>
+                                </div>
+                            </form>
+                        </AccordionTab>
+                    </Accordion>
                     <Toolbar className="mb-4" left={leftToolbarTemplate} ></Toolbar>
 
                     <DataTable
@@ -296,6 +472,7 @@ const Users = (props) => {
                         <Column field="email" header="Email" sortable body={emailBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
                         <Column field="userName" header="Username" sortable body={usernameBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
                         <Column field="phoneNumber" header="Phone Number" sortable body={phoneNumberBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                        <Column field="role" header="Roles" sortable body={rolesBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
 
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
@@ -340,6 +517,15 @@ const Users = (props) => {
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {user && <span>Are you sure you want to delete the selected users?</span>}
+                        </div>
+                    </Dialog>
+
+                    <Dialog visible={roleDialog} style={{ width: '450px' }} header="User" modal className="p-fluid" footer={!isDelete ? roleDialogFooter : deleteRoleDialogFooter} onHide={hideRoleDialog}>
+                        <div className="field">
+                        <Dropdown value={role} onChange={(e) => {
+                            setRole(e.value);
+                        }} options={roles} optionLabel="name"
+                                  placeholder="Select a Role" className="w-full" />
                         </div>
                     </Dialog>
                 </div>

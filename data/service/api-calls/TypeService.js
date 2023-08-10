@@ -1,4 +1,3 @@
-import {axiosInstance as axios} from "../../../axiosInterceptorInstance";
 import {BaseService} from "../../library/BaseService";
 
 export default class ProductService {

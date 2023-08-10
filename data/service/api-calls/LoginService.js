@@ -8,5 +8,10 @@ export default class LoginService {
             data: user
         });
     }
-
+    async logout() {
+        return await BaseService({
+            method: 'POST',
+            url: 'auth/logout'
+        });
+    }
 }

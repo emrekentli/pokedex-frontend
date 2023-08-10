@@ -14,9 +14,6 @@ export default class PokemonService {
             method: 'POST',
             url: '/pokemons',
             data: pokemon,
-            header: {
-                'Content-Type': 'multipart/form-data',
-            }
         });
     }
 

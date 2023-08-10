@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {BaseService} from "../../library/BaseService";
 
 export default class UserService {
@@ -53,6 +52,22 @@ export default class UserService {
         return await BaseService({
             method: 'DELETE',
             url: '/users/wish/'+ pokemon.id,
+        });
+    }
+
+    async addRoleToUser(user,role){
+        return await BaseService({
+            method: 'POST',
+            url: '/users/roles/',
+            data: {userId: user.id, roleId: role.id}
+        });
+    }
+
+      async deleteRoleToUser(user,role){
+        return await BaseService({
+            method: 'DELETE',
+            url: '/users/roles/',
+            data: {userId: user.id, roleId: role.id}
         });
     }
 }
