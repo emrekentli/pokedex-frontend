@@ -1,6 +1,5 @@
 // next.config.js
 module.exports = {
-    reactDevOverlay: false,
     async rewrites() {
         return [
           {
